@@ -9,9 +9,11 @@ using namespace std;
 int main()
 {
     cout << "Hello World" << endl;
+    
     Point myPoint;
+    //cout << myPoint << endl;
+
     // Vector myObj;  // Create an object of MyClass
-    cout << myPoint << endl;
-    //  myDirection;
+    // myDirection;
     // cout << myDirection << endl;
 }

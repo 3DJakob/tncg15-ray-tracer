@@ -1,28 +1,27 @@
 #ifndef __POINT_H__
 #define __POINT_H__
+#include <iostream>
+#include <string.h>
 using namespace std;
-class Point
-{
-private:
-    double x,y,z;
+
+class Point{
 public:
-    Point();
-    // Point(double _x, double _y, double _z);
+    inline Point(){x=0.0; y=0.0; z=0.0;}
+    Point(double _x, double _y, double _z);
+    
+    //~Point();
     friend ostream& operator<<(ostream &os, const Point &s);
-    ~Point();
+    std::string toString(double _x, double _y, double _z);
+private:
+    double x;
+    double y;
+    double z;
 };
 
-
-
-
-Point::Point(/* args */)
-{
-}
-
-Point::~Point()
-{
-}
-
+/* void print(std::ostream& os) 
+{   
+    os << "Print something to wherever the caller wants to" << std::endl;
+}  */
 // ostream& operator << (ostream &os, const Point &s);
 
 #endif // __POINT_H__ 
