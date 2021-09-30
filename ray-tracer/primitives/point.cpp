@@ -19,6 +19,4 @@ using namespace std;
     os << s.x << '/' << s.y << '/' << s.z;
     return os;
 } */
-ostream& operator<< (ostream &os, const Point &s) {
-    return (os << "X: " << to_string(s.x) << " Y: " << to_string(s.y) << " Z: " << to_string(s.z)  << std::endl);
-}
+
