@@ -1,23 +1,23 @@
+#ifndef __DIRECTION_H__
+#define __DIRECTION_H__
+
+
 using namespace std;
+#include <iostream>
 
 class Direction {
-    private:
-        /* data */
-    public:
-        double inclination;
-        double azimuth;
+private:
+    double inclination;
+    double azimuth;
+public:
+    inline Direction(){inclination=0.0; azimuth=0.0;}
+    Direction(double inInclination, double inAzimuth) : inclination(inInclination), azimuth(inAzimuth){};
 
-        Direction();
-        Direction(double inclination, double azimuth);
-        ~Direction();
+    friend ostream& operator<< (ostream &os, const Direction &s);
 };
 
-// Direction::Direction(double inclination, double azimuth) {
+ostream& operator << (ostream &os, const Direction &s) {
+    return (os << "Inclination: " << to_string(s.inclination) << " Azimuth: " << to_string(s.azimuth) << std::endl);
+}
 
-// }
-
-// Direction::~Direction() {
-
-// }
-
-// ostream& operator << (ostream &os, const Direction &s);
+#endif // __DIRECTION_H__
