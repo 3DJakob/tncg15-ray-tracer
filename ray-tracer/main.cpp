@@ -2,22 +2,26 @@
 #include "primitives/point.h"
 #include "primitives/vector.h"
 #include "primitives/direction.h"
+#include "primitives/triangle.h"
 #include <iostream>
 using namespace std;
 
 int main()
 {
-    cout << "Hello World" << endl;
+    // cout << "Hello World" << endl;
     
     // Point myPoint;
     Point myPoint(1.0,1.0,1.0);
-    cout << myPoint << endl;
+    // cout << myPoint << endl;
 
     // Direction myDirection;
     Direction myDirection(1.0,1.0);  // Create an object of MyClass
-    cout << myDirection << endl;
+    // cout << myDirection << endl;
     
     Vector myVector(myPoint,myPoint,myDirection);
-    cout << "Vector: \n" << myVector << endl;
+    // cout << "Vector: \n" << myVector << endl;
+
+    Triangle myTriangle(myPoint, myPoint, myPoint, myDirection);
+    
     return 0;
 }

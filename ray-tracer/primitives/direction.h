@@ -4,11 +4,12 @@
 
 using namespace std;
 #include <iostream>
+#include "point.h"
 
 class Direction {
 private:
-    double inclination;
-    double azimuth;
+    double inclination, azimuth;
+    Point startPos, endPos;
 public:
     inline Direction(){inclination=0.0; azimuth=0.0;}
     Direction(double inInclination, double inAzimuth) : inclination(inInclination), azimuth(inAzimuth){};
