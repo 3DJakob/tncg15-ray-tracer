@@ -5,9 +5,9 @@ using namespace std;
 
 //Triangle::Triangle() = default;
 
-Triangle::Triangle(Point _p0, Point _p1, Point _vp,) : p0(_p0), p1(_p1), p2(_p2) {
-    normal = glm::normalize(glm::cross(p1 - p0, p2 - p0));
-}
+//Triangle::Triangle(Point _p1, Point _p2, Point _p3,) : p1(_p1), p2(_p2), p3(_p3) {
+//    normal = glm::normalize(glm::cross(p2 - p1, p3 - p1));
+//}
 
 //Triangle::~Triangle() = default;
 

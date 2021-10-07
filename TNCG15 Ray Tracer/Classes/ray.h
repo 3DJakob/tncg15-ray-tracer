@@ -10,18 +10,39 @@
 
 #include <stdio.h>
 #include "glm.hpp"
+#include "triangle.h"
+#include "point.hpp"
 
 
 class Ray {
    
     
 public:
-    Ray(Point _startPoint, glm::vec3 _dir) : startPoint(_startPoint),  dir(_dir){}
+//    Triangle triangleHit;
+    string foo;
+    
+    
 
-    void setEnd(Vertex _end);
-    Vertex getEndPoint();
+    // Ray(Point _startPoint, glm::vec3 _dir) : startPoint(_startPoint),  dir(_dir){}
+    
+    Ray(Point _startPoint, Point direction, Triangle triangles[]) {
+//        triangleHit = triangles[0];
+//        triangleHit = Triangle(Point(), Point(), Point());
+        foo = "test";
+        // Find the first triangle hit
+        // loop through all triangles
+        
+        // save start and endpoint and triangle ref
+        
+//        for(Triangle triangle : triangleList) {
+//                triangle.rayIntersection(ray, minDistance);
+//            }
+    }
 
-    const Vertex &getStart() const;
+    void setEnd(Point _end);
+    Point getEndPoint();
+
+    const Point &getStart() const;
 
 
 
