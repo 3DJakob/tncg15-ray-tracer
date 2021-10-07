@@ -22,7 +22,7 @@ int main()
 //    Triangle myTriangle(Point(), Point(1.0, 0.0, 0.0), Point(0.0, 0.0, 1.0));
 //    cout << myTriangle.p1 << endl;
     
-    Camera myCamera(Point(-1.0, 0.0, 0.0), Point(0.0, 0.0, 0.0));
+    Camera myCamera(Point(-1.0, 0.0, 0.0), Point(0.0, 1.0, 0.0));
     cout << myCamera.position << endl;
     
     // assemble all objects
