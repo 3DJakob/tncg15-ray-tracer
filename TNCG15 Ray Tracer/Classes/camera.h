@@ -70,7 +70,8 @@ public:
                     pointOfInterest.get().z + ((j - (height / 2)) / height)*2
                 );
                 
-                cout << target << endl;
+//                cout << "START: " << position << endl;
+//                cout << "TARGET: " << target << endl;
                 
 
                 Ray tempRay(position, target, triangles);

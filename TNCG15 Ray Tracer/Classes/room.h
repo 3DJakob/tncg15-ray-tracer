@@ -39,8 +39,6 @@ public:
         Point(10.0, -6.0, -5.0), //p10Floor
         Point(0.0, -6.0, -5.0),  //p11Floor
     };
-
-    string foo = "foobar";
     
     ColorDbl green = ColorDbl(0.0, 255.0, 0.0);
 

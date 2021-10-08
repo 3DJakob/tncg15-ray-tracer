@@ -22,16 +22,22 @@ public:
     
     Ray(Point _startPoint, Point direction, Triangle triangles[]) {
         triangleHit = triangles[0];
+        startPoint = _startPoint.get();
         // Find the first triangle hit
         // loop through all triangles
         
         double minDist = 9999;
         int matchIndex = -1;
         
+//        cout << "START: X " << startPoint.x << " Y " << startPoint.y << " Z " << startPoint.z << endl;
+//        cout << "TARGET: " << direction << endl;
+//
+//        cout << "X: " << (direction.get() - startPoint).x << " Y: " << (direction.get() - startPoint).y << " Z: " << (direction.get() - startPoint).z << endl;
+        
         for (int i = 0; i < 20; i++) {
             auto triangle = triangles[i];
             auto res = glm::vec3();
-            cout << direction << endl;
+//            cout << direction << endl;
             bool doesHit = triangle.RayIntersectsTriangle(startPoint, direction.get() - startPoint, res);
             if (doesHit && res.length() < minDist) {
                 cout << "Hit: " << Point(res.x, res.y, res.z) << endl;
