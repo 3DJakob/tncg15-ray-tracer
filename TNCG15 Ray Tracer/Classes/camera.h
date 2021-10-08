@@ -23,9 +23,9 @@ public:
     Point pointOfInterest;
     Point pointOfInterestTop;
     int fov = 90;
-    double height = 1;
+    double height = 480;
     // int width = 640;
-    double width = 1;
+    double width = 480;
 
     Camera(Point positionIn, Point pointOfInterestIn, Point pointOfInterestTopIn)
     {
@@ -85,7 +85,7 @@ public:
             }
         }
 
-        auto test = AnImage.WriteToFile("/Users/jakob/coding/tncg15/TNCG15\ Ray\ Tracer/fooo.bmp");
+        auto test = AnImage.WriteToFile("/Users/jakob/coding/tncg15/TNCG15\ Ray\ Tracer/sample.bmp");
         if (test)
         {
             cout << "success!" << endl;

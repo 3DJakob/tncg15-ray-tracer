@@ -40,7 +40,7 @@ public:
 //            cout << direction << endl;
             bool doesHit = triangle.RayIntersectsTriangle(startPoint, direction.get() - startPoint, res);
             if (doesHit && res.length() < minDist) {
-                cout << "Hit: " << Point(res.x, res.y, res.z) << endl;
+//                cout << "Hit: " << Point(res.x, res.y, res.z) << endl;
                 minDist = res.length();
                 matchIndex = i;
             }
