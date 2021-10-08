@@ -62,8 +62,8 @@ public:
             Triangle(points[2], points[8], points[3], green),
 
             Triangle(points[2], points[7], points[8], green),
-            Triangle(points[1], points[7], points[2]),
-            Triangle(points[0], points[6], points[1]),
+            Triangle(points[1], points[7], points[2], green),
+            Triangle(points[0], points[6], points[1], green),
             Triangle(points[1], points[6], points[7], green),
 
             // Floor
