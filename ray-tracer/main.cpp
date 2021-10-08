@@ -21,7 +21,7 @@ int main()
     Vector myVector(myPoint,myPoint,myDirection);
     // cout << "Vector: \n" << myVector << endl;
 
-    Triangle myTriangle(myPoint, myPoint, myPoint, myDirection);
+    Triangle myTriangle(myPoint, myPoint, myPoint);
     
     return 0;
 }

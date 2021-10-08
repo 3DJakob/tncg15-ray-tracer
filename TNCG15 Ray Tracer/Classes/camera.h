@@ -21,63 +21,65 @@ class Camera
 public:
     Point position;
     Point pointOfInterest;
+    Point pointOfInterestTop;
     int fov = 90;
-    int height = 480;
+    double height = 1;
     // int width = 640;
-    int width = 480;
+    double width = 1;
 
-    Camera(Point positionIn, Point pointOfInterestIn)
+    Camera(Point positionIn, Point pointOfInterestIn, Point pointOfInterestTopIn)
     {
         position = positionIn;
         pointOfInterest = pointOfInterestIn;
+        pointOfInterestTop = pointOfInterestTopIn;
     };
 
     BMP AnImage;
 
-
-
-    void getPerpendicular(Point p1, Point p2)
+    Point getPerpendicularVector(Point p1, Point p2, Point p3)
     {
-        auto line = p1.get() - p2.get();
-        cout << " X: " << line.x << " Y: " << line.y << " Z: " << line.z << "" << endl;
-        
-        glm::vec3 perpendicular = glm::vec3(line.y, line.x, line.z);
-//        glm::vec3 perpendicular2 = glm::vec3(line.y, line.x, line.z);
-        
-        glm::vec3 perpendicular2 = glm::cross(line, perpendicular);
-        
-        
-   
-        
+        auto line1 = p2.get() - p1.get();
+        auto line2 = p3.get() - p1.get();
+        cout << " X: " << line1.x << " Y: " << line1.y << " Z: " << line1.z << "" << endl;
+        cout << " X: " << line2.x << " Y: " << line2.y << " Z: " << line2.z << "" << endl;
+
+        glm::vec3 perpendicular = glm::cross(line1, line2);
+
         cout << " X: " << perpendicular.x << " Y: " << perpendicular.y << " Z: " << perpendicular.z << "" << endl;
-        cout << " X: " << perpendicular2.x << " Y: " << perpendicular2.y << " Z: " << perpendicular2.z << "" << endl;
-        
+        return Point(perpendicular.x, perpendicular.y, perpendicular.z);
     }
 
     void render(Triangle triangles[])
     {
-        
+
         cout << "calc axis:" << endl;
-        getPerpendicular(position, pointOfInterest);
-        
-        AnImage.SetSize(width, height);
+        auto cameraPlaneY = getPerpendicularVector(pointOfInterest, position, pointOfInterestTop);
+        Point cameraPlaneZ = pointOfInterestTop;
+
+        AnImage.SetSize(width + 1, height + 1);
         AnImage.SetBitDepth(8);
 
-        for (int i = 0; i < width; i++)
+        for (int i = 0; i <= width; i++)
         {
-            for (int j = 0; j < height; j++)
+            for (int j = 0; j <= height; j++)
             {
                 // 2 x 2 camera plane
-//                auto target = Point(pointOfInterestIn.x +)
+                auto target = Point(
+                    pointOfInterest.get().x,
+                    pointOfInterest.get().y + ((i - (width / 2)) / width)*2,
+                    pointOfInterest.get().z + ((j - (height / 2)) / height)*2
+                );
+                
+                cout << target << endl;
+                
 
-//                    Ray tempRay(position, );
-
-                //                auto color = Ray.triangleHit.material;
+                Ray tempRay(position, target, triangles);
+                auto color = tempRay.triangleHit.color;
 
                 RGBApixel Temp = AnImage.GetPixel(i, j);
-                Temp.Blue = 255;
-                Temp.Green = 255;
-                Temp.Red = 0;
+                Temp.Blue = color.b;
+                Temp.Green = color.g;
+                Temp.Red = color.r;
                 AnImage.SetPixel(i, j, Temp);
             }
         }

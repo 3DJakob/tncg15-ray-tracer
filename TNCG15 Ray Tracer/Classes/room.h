@@ -12,6 +12,7 @@
 #include <string.h>
 #include "triangle.h"
 #include "point.hpp"
+#include "ColorDbl.h"
 using namespace std;
 
 class Room
@@ -40,6 +41,8 @@ public:
     };
 
     string foo = "foobar";
+    
+    ColorDbl green = ColorDbl(0.0, 255.0, 0.0);
 
     Triangle triangles[20]
         {
@@ -50,20 +53,20 @@ public:
             Triangle(points[2], points[3], points[4]),
 
             // Sides
-            Triangle(points[0], points[11], points[6]),
-            Triangle(points[0], points[5], points[11]),
-            Triangle(points[5], points[10], points[11]),
-            Triangle(points[5], points[4], points[10]),
+            Triangle(points[0], points[11], points[6], green),
+            Triangle(points[0], points[5], points[11], green),
+            Triangle(points[5], points[10], points[11], green),
+            Triangle(points[5], points[4], points[10], green),
 
-            Triangle(points[4], points[9], points[10]),
-            Triangle(points[3], points[9], points[4]),
-            Triangle(points[3], points[8], points[9]),
-            Triangle(points[2], points[8], points[3]),
+            Triangle(points[4], points[9], points[10], green),
+            Triangle(points[3], points[9], points[4], green),
+            Triangle(points[3], points[8], points[9], green),
+            Triangle(points[2], points[8], points[3], green),
 
-            Triangle(points[2], points[7], points[8]),
+            Triangle(points[2], points[7], points[8], green),
             Triangle(points[1], points[7], points[2]),
             Triangle(points[0], points[6], points[1]),
-            Triangle(points[1], points[6], points[7]),
+            Triangle(points[1], points[6], points[7], green),
 
             // Floor
             Triangle(points[6], points[11], points[7]),

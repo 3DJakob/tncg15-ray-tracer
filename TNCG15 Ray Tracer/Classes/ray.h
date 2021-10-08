@@ -18,25 +18,38 @@ class Ray {
    
     
 public:
-//    Triangle triangleHit;
-    string foo;
-    
-    
-
-    // Ray(Point _startPoint, glm::vec3 _dir) : startPoint(_startPoint),  dir(_dir){}
+    Triangle triangleHit;
     
     Ray(Point _startPoint, Point direction, Triangle triangles[]) {
-//        triangleHit = triangles[0];
-//        triangleHit = Triangle(Point(), Point(), Point());
-        foo = "test";
+        triangleHit = triangles[0];
         // Find the first triangle hit
         // loop through all triangles
         
-        // save start and endpoint and triangle ref
+        double minDist = 9999;
+        int matchIndex = -1;
         
-//        for(Triangle triangle : triangleList) {
-//                triangle.rayIntersection(ray, minDistance);
-//            }
+        for (int i = 0; i < 20; i++) {
+            auto triangle = triangles[i];
+            auto res = glm::vec3();
+            cout << direction << endl;
+            bool doesHit = triangle.RayIntersectsTriangle(startPoint, direction.get() - startPoint, res);
+            if (doesHit && res.length() < minDist) {
+                cout << "Hit: " << Point(res.x, res.y, res.z) << endl;
+                minDist = res.length();
+                matchIndex = i;
+            }
+        }
+        
+        if (matchIndex != -1) {
+            triangleHit = triangles[matchIndex];
+        }
+        
+        
+        // save start and endpoint and triangle ref
+//        for(Triangle triangle : triangles) {
+////            triangle.rayIntersection(ray, minDistance);
+//
+//        }
     }
 
     void setEnd(Point _end);
@@ -48,7 +61,7 @@ public:
 
 private:
     glm::vec3 startPoint;
-    glm::vec3 endpoint;
+    glm::vec3 endPoint;
     glm::vec3 dir;
     // Material?
 };
