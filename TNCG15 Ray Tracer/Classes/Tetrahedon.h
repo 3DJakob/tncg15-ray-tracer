@@ -1,0 +1,81 @@
+//
+//  Tetrahedon.h
+//  TNCG15 Ray Tracer
+//
+//  Created by Jakob Unnebäck on 2021-10-12.
+//
+
+#ifndef Tetrahedon_h
+#define Tetrahedon_h
+
+#include <iostream>
+#include <string.h>
+#include "triangle.h"
+#include "point.hpp"
+#include "ColorDbl.h"
+using namespace std;
+
+class Tetrahedon
+{
+
+public:
+    Point p0;
+    Point p1;
+    Point p2;
+    Point p3;
+    int numberOfTriangles = 4;
+    Triangle triangles[4];
+
+    ColorDbl red = ColorDbl(255.0, 0.0, 0.0);
+    ColorDbl green = ColorDbl(0.0, 255.0, 0.0);
+    ColorDbl blue = ColorDbl(0.0, 0.0, 255.0);
+    ColorDbl magenta = ColorDbl(255.0, 0.0, 255.0);
+    ColorDbl cyan = ColorDbl(0.0, 255.0, 255.0);
+
+    Tetrahedon(Point _p0) {
+        //Top
+        Point p0 = Point(_p0.get().x, _p0.get().y, -2+_p0.get().z);
+        // Base
+        Point p1 = Point(-1 + _p0.get().x, _p0.get().y, 1 +_p0.get().z); //front
+        Point p2 = Point(_p0.get().x, -1 + _p0.get().y, 1 +_p0.get().z);  //left
+        Point p3 = Point(_p0.get().x, 1 + _p0.get().y, 1 +_p0.get().z);  //right
+
+        triangles[0] = Triangle(p0, p3, p1, blue);
+        triangles[1] = Triangle(p0, p1, p2, cyan);
+        triangles[2] = Triangle(p0, p2, p3, red);
+        triangles[3] = Triangle(p1, p2, p3, magenta);
+    }
+
+    Point tetrahedronPoints[4]{
+        p0,  //
+        p1,  //
+        p2,  //
+        p3,  //
+    };
+
+
+    // Triangle triangles[1]
+    //     {
+    //         // Roof
+    //         // Triangle(tetrahedronPoints[0], tetrahedronPoints[2], tetrahedronPoints[1], blue),
+    //         // Triangle(tetrahedronPoints[0], tetrahedronPoints[1], tetrahedronPoints[3], magenta),
+    //         // Triangle(tetrahedronPoints[0], tetrahedronPoints[3], tetrahedronPoints[2], blue),
+    //         // Triangle(tetrahedronPoints[1], tetrahedronPoints[2], tetrahedronPoints[3], magenta),
+           
+    // };
+
+
+                             friend ostream &
+                             operator<<(ostream &os, const Tetrahedon &s);
+    std::string toString(double _x, double _y, double _z);
+
+private:
+};
+
+ostream &operator<<(ostream &os, const Tetrahedon &s)
+{
+    return (os << "Tetrahedon mesh" << std::endl);
+}
+
+#endif /* Tetrahedon.h */
+

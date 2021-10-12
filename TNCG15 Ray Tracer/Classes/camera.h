@@ -65,9 +65,9 @@ public:
             {
                 // 2 x 2 camera plane
                 auto target = Point(
-                    pointOfInterest.get().x,
-                    pointOfInterest.get().y + ((i - (width / 2)) / width)*2,
-                    pointOfInterest.get().z + ((j - (height / 2)) / height)*2
+                    pointOfInterest.get().x + cameraPlaneY.get().x * ((i - (width / 2)) / width)*2 + cameraPlaneZ.get().x * ((j - (height / 2)) / height)*2,
+                    pointOfInterest.get().y + cameraPlaneY.get().y * ((i - (width / 2)) / width)*2 + cameraPlaneZ.get().y * ((j - (height / 2)) / height)*2,
+                    pointOfInterest.get().z + cameraPlaneY.get().z * ((i - (width / 2)) / width)*2 + cameraPlaneZ.get().z * ((j - (height / 2)) / height)*2
                 );
                 
 //                cout << "START: " << position << endl;
@@ -76,6 +76,14 @@ public:
 
                 Ray tempRay(position, target, triangles);
                 auto color = tempRay.triangleHit.color;
+                
+                // triangleHit.material.getRay(incoming)
+                // push new ray to array
+                // pepeat!!
+                
+                // backwards loop array importance * accumulated color
+                
+                // save importance move on
 
                 RGBApixel Temp = AnImage.GetPixel(i, j);
                 Temp.Blue = color.b;
