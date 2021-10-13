@@ -9,6 +9,7 @@
 #define camera_h
 #include "EasyBMP.h"
 #include "ray.h"
+#include <vector>
 
 #include "point.hpp"
 #include "triangle.h"
@@ -49,7 +50,7 @@ public:
         return Point(perpendicular.x, perpendicular.y, perpendicular.z);
     }
 
-    void render(Triangle triangles[])
+    void render(vector<Triangle> triangles, AreaLight sceneAreaLight)
     {
 
         cout << "calc axis:" << endl;
@@ -74,8 +75,9 @@ public:
 //                cout << "TARGET: " << target << endl;
                 
 
-                Ray tempRay(position, target, triangles);
+                Ray tempRay(position, target, triangles, sceneAreaLight);
                 auto color = tempRay.triangleHit.color;
+                
                 
                 // triangleHit.material.getRay(incoming)
                 // push new ray to array

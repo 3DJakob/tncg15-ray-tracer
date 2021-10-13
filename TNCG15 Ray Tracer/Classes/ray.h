@@ -12,6 +12,7 @@
 #include "glm.hpp"
 #include "triangle.h"
 #include "point.hpp"
+#include "AreaLight.h"
 
 
 class Ray {
@@ -20,35 +21,35 @@ class Ray {
 public:
     Triangle triangleHit;
     
-    Ray(Point _startPoint, Point direction, Triangle triangles[]) {
+    Ray(Point _startPoint, Point direction, vector<Triangle> triangles, AreaLight sceneAreaLight) {
         triangleHit = triangles[0];
         startPoint = _startPoint.get();
-        // Find the first triangle hit
-        // loop through all triangles
         
         double minDist = 9999;
-        int matchIndex = -1;
+        glm::vec3 hitLocation;
         
-//        cout << "START: X " << startPoint.x << " Y " << startPoint.y << " Z " << startPoint.z << endl;
-//        cout << "TARGET: " << direction << endl;
-//
-//        cout << "X: " << (direction.get() - startPoint).x << " Y: " << (direction.get() - startPoint).y << " Z: " << (direction.get() - startPoint).z << endl;
-        
-        for (int i = 0; i < 20; i++) {
-            auto triangle = triangles[i];
+        for (Triangle triangle : triangles) {
             auto res = glm::vec3();
 //            cout << direction << endl;
             bool doesHit = triangle.RayIntersectsTriangle(startPoint, direction.get() - startPoint, res);
             if (doesHit && res.length() < minDist) {
 //                cout << "Hit: " << Point(res.x, res.y, res.z) << endl;
                 minDist = res.length();
-                matchIndex = i;
+                triangleHit = triangle;
+                hitLocation = res;
             }
         }
         
-        if (matchIndex != -1) {
-            triangleHit = triangles[matchIndex];
-        }
+        
+        // Calculate number of seen pointlights
+//        for(Point light : sceneAreaLight.lightPoints) {
+//            // Check if seen!
+//            for (Triangle triangle : triangles) {
+//
+//            }
+////            bool doesHit = triangle.RayIntersectsTriangle(startPoint, direction.get() - startPoint, res);
+//        }
+        
         
         
         // save start and endpoint and triangle ref

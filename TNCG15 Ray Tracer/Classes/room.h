@@ -14,18 +14,16 @@
 #include "point.hpp"
 #include "ColorDbl.h"
 using namespace std;
+#include <vector>
 
 class Room
 {
 
 public:
     // inline Mesh(){x=0.0; y=0.0; z=0.0;}
-    Room() {
-
-    }
-
-    int numberOfTriangles = 20;
-
+    vector <Triangle> triangles;
+    ColorDbl green = ColorDbl(0.0, 255.0, 0.0);
+    
     Point points[12]{
         Point(-3.0, 0.0, 5.0),  //p0Roof
         Point(0.0, 6.0, 5.0),   //p1Roof
@@ -41,39 +39,36 @@ public:
         Point(10.0, -6.0, -5.0), //p10Floor
         Point(0.0, -6.0, -5.0),  //p11Floor
     };
-    
-    ColorDbl green = ColorDbl(0.0, 255.0, 0.0);
 
-    Triangle triangles[20]
-        {
-            // Roof
-            Triangle(points[0], points[1], points[5]),
-            Triangle(points[1], points[2], points[5]),
-            Triangle(points[2], points[4], points[5]),
-            Triangle(points[2], points[3], points[4]),
+    Room() {
+        // Roof
+        triangles.push_back(Triangle(points[0], points[1], points[5]));
+        triangles.push_back(Triangle(points[1], points[2], points[5]));
+        triangles.push_back(Triangle(points[2], points[4], points[5]));
+        triangles.push_back(Triangle(points[2], points[3], points[4]));
 
-            // Sides
-            Triangle(points[0], points[11], points[6], green),
-            Triangle(points[0], points[5], points[11], green),
-            Triangle(points[5], points[10], points[11], green),
-            Triangle(points[5], points[4], points[10], green),
+        // Sides
+        triangles.push_back(Triangle(points[0], points[11], points[6], green));
+        triangles.push_back(Triangle(points[0], points[5], points[11], green));
+        triangles.push_back(Triangle(points[5], points[10], points[11], green));
+        triangles.push_back(Triangle(points[5], points[4], points[10], green));
+        
+        triangles.push_back(Triangle(points[4], points[9], points[10], green));
+        triangles.push_back(Triangle(points[3], points[9], points[4], green));
+        triangles.push_back(Triangle(points[3], points[8], points[9], green));
+        triangles.push_back(Triangle(points[2], points[8], points[3], green));
 
-            Triangle(points[4], points[9], points[10], green),
-            Triangle(points[3], points[9], points[4], green),
-            Triangle(points[3], points[8], points[9], green),
-            Triangle(points[2], points[8], points[3], green),
+        triangles.push_back(Triangle(points[2], points[7], points[8], green));
+        triangles.push_back(Triangle(points[1], points[7], points[2], green));
+        triangles.push_back(Triangle(points[0], points[6], points[1], green));
+        triangles.push_back(Triangle(points[1], points[6], points[7], green));
 
-            Triangle(points[2], points[7], points[8], green),
-            Triangle(points[1], points[7], points[2], green),
-            Triangle(points[0], points[6], points[1], green),
-            Triangle(points[1], points[6], points[7], green),
-
-            // Floor
-            Triangle(points[6], points[11], points[7]),
-            Triangle(points[7], points[11], points[8]),
-            Triangle(points[8], points[11], points[10]),
-            Triangle(points[8], points[10], points[9]),
-    };
+        // Floor
+        triangles.push_back(Triangle(points[6], points[11], points[7]));
+        triangles.push_back(Triangle(points[7], points[11], points[8]));
+        triangles.push_back(Triangle(points[8], points[11], points[10]));
+        triangles.push_back(Triangle(points[8], points[10], points[9]));
+    }
 
 
                              friend ostream &

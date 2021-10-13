@@ -31,20 +31,22 @@ int main()
     
     Tetrahedon myTetrahedon(Point(8.0, 0.0, 0.0));
     
-    Triangle SceneTriangles[myTetrahedon.numberOfTriangles + myRoom.numberOfTriangles];
-    for (int i = 0; i < myTetrahedon.numberOfTriangles + myRoom.numberOfTriangles; i++) {
-        if (i < myTetrahedon.numberOfTriangles) {
-            SceneTriangles[i] = myTetrahedon.triangles[i];
-        } else {
-            SceneTriangles[i] = myRoom.triangles[i - myTetrahedon.numberOfTriangles];
-        }
-    }
+
+    myRoom.triangles.insert( myRoom.triangles.end(), myTetrahedon.triangles.begin(), myTetrahedon.triangles.end() );
+    cout << myRoom.triangles.size() << endl;
+//    vector<Triangle> SceneTriangles(myRoom.triangles.size() + myTetrahedon.triangles.size());
+//        merge(myRoom.triangles.begin(),
+//              myRoom.triangles.end(),
+//              myTetrahedon.triangles.begin(),
+//              myTetrahedon.triangles.end(),
+//              SceneTriangles.begin());
     
-//    myCamera.render(myRoom.triangles);
-    myCamera.render(SceneTriangles);
-    
-    
+
     AreaLight myAreaLight;
+//    myCamera.render(myRoom.triangles);
+    myCamera.render(myRoom.triangles, myAreaLight);
+    
+
     
     
     return 0;
