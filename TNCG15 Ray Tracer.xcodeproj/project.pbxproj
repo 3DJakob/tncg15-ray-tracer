@@ -307,7 +307,7 @@
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					/opt/homebrew/Cellar/glm/0.9.9.8/include/glm,
 					"/Users/jakob/coding/TNCG15\\ Ray\\ Tracer/glm-master/glm",
-					"/Users/alex/coding/TNCG15\\ Ray\\ Tracer/",
+					"/Users/alex/coding/TNCG15\\ Ray\\ Tracer/glm-master/glm",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = /opt/homebrew/Cellar/glm/0.9.9.8/include/glm;

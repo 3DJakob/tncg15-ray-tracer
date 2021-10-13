@@ -22,7 +22,7 @@ class Room
 public:
     // inline Mesh(){x=0.0; y=0.0; z=0.0;}
     vector <Triangle> triangles;
-    ColorDbl green = ColorDbl(0.0, 255.0, 0.0);
+    
     
     Point points[12]{
         Point(-3.0, 0.0, 5.0),  //p0Roof
@@ -42,40 +42,45 @@ public:
 
     Room() {
         // Roof
-        triangles.push_back(Triangle(points[0], points[1], points[5]));
-        triangles.push_back(Triangle(points[1], points[2], points[5]));
-        triangles.push_back(Triangle(points[2], points[4], points[5]));
-        triangles.push_back(Triangle(points[2], points[3], points[4]));
+        triangles.push_back(Triangle(points[0], points[1], points[5], gray));
+        triangles.push_back(Triangle(points[1], points[2], points[5], gray));
+        triangles.push_back(Triangle(points[2], points[4], points[5], gray));
+        triangles.push_back(Triangle(points[2], points[3], points[4], gray));
 
         // Sides
-        triangles.push_back(Triangle(points[0], points[11], points[6], green));
-        triangles.push_back(Triangle(points[0], points[5], points[11], green));
-        triangles.push_back(Triangle(points[5], points[10], points[11], green));
-        triangles.push_back(Triangle(points[5], points[4], points[10], green));
+        triangles.push_back(Triangle(points[0], points[11], points[6],  green));
+        triangles.push_back(Triangle(points[0], points[5], points[11],  green));
+        triangles.push_back(Triangle(points[5], points[10], points[11], blue));
+        triangles.push_back(Triangle(points[5], points[4], points[10],  blue));
         
-        triangles.push_back(Triangle(points[4], points[9], points[10], green));
-        triangles.push_back(Triangle(points[3], points[9], points[4], green));
-        triangles.push_back(Triangle(points[3], points[8], points[9], green));
-        triangles.push_back(Triangle(points[2], points[8], points[3], green));
+        triangles.push_back(Triangle(points[4], points[9], points[10],orange));
+        triangles.push_back(Triangle(points[3], points[9], points[4], orange));
+        triangles.push_back(Triangle(points[3], points[8], points[9] ));
+        triangles.push_back(Triangle(points[2], points[8], points[3] ));
 
-        triangles.push_back(Triangle(points[2], points[7], points[8], green));
-        triangles.push_back(Triangle(points[1], points[7], points[2], green));
+        triangles.push_back(Triangle(points[2], points[7], points[8], cyan));
+        triangles.push_back(Triangle(points[1], points[7], points[2], cyan));
         triangles.push_back(Triangle(points[0], points[6], points[1], green));
         triangles.push_back(Triangle(points[1], points[6], points[7], green));
 
         // Floor
-        triangles.push_back(Triangle(points[6], points[11], points[7]));
-        triangles.push_back(Triangle(points[7], points[11], points[8]));
-        triangles.push_back(Triangle(points[8], points[11], points[10]));
-        triangles.push_back(Triangle(points[8], points[10], points[9]));
+        triangles.push_back(Triangle(points[6], points[11], points[7], lightGray));
+        triangles.push_back(Triangle(points[7], points[11], points[8], lightGray));
+        triangles.push_back(Triangle(points[8], points[11], points[10],lightGray));
+        triangles.push_back(Triangle(points[8], points[10], points[9], lightGray));
     }
 
 
-                             friend ostream &
-                             operator<<(ostream &os, const Room &s);
+    friend ostream &operator<<(ostream &os, const Room &s);
     std::string toString(double _x, double _y, double _z);
 
 private:
+    ColorDbl green = ColorDbl(0.0, 255.0, 0.0);
+    ColorDbl blue = ColorDbl(0.0, 0.0, 255.0);
+    ColorDbl orange = ColorDbl(255.0, 120.0, 0.0);
+    ColorDbl gray = ColorDbl(150.0, 150.0, 150.0);
+    ColorDbl cyan = ColorDbl(0.0, 255.0, 255.0);
+    ColorDbl lightGray = ColorDbl(244.0, 244.0, 244.0);
 };
 
 ostream &operator<<(ostream &os, const Room &s)

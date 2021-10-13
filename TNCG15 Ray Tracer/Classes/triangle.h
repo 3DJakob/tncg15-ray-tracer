@@ -33,9 +33,6 @@ public:
         color = colorIn;
     }
     
-//    bool RayIntersectsTriangle(glm::vec3 rayOrigin,
-//                               glm::vec3 rayVector,
-//                               glm::vec3& outIntersectionPoint);
     
     bool RayIntersectsTriangle(glm::vec3 rayOrigin,
                                glm::vec3 rayVector,

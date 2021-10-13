@@ -20,10 +20,13 @@ class Ray {
     
 public:
     Triangle triangleHit;
+    Point rayPoint;
+    
     
     Ray(Point _startPoint, Point direction, vector<Triangle> triangles, AreaLight sceneAreaLight) {
         triangleHit = triangles[0];
         startPoint = _startPoint.get();
+        
         
         double minDist = 9999;
         glm::vec3 hitLocation;
@@ -39,7 +42,7 @@ public:
                 hitLocation = res;
             }
         }
-        
+        rayPoint = Point(hitLocation.x, hitLocation.y, hitLocation.z);
         
         // Calculate number of seen pointlights
 //        for(Point light : sceneAreaLight.lightPoints) {
