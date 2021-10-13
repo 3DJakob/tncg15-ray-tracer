@@ -24,6 +24,8 @@ public:
 
     }
 
+    int numberOfTriangles = 20;
+
     Point points[12]{
         Point(-3.0, 0.0, 5.0),  //p0Roof
         Point(0.0, 6.0, 5.0),   //p1Roof

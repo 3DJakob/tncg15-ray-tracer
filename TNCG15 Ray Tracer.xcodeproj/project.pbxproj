@@ -24,6 +24,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		366C8A3A27158FF500DE7FA3 /* material.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = material.h; sourceTree = "<group>"; };
+		366C8A3B2715AF0400DE7FA3 /* Tetrahedon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tetrahedon.h; sourceTree = "<group>"; };
+		366C8A3C2715B00500DE7FA3 /* AreaLight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AreaLight.h; sourceTree = "<group>"; };
 		36A54A85270F142C00827994 /* room.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = room.h; sourceTree = "<group>"; };
 		36A54A86270F183E00827994 /* triangle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = triangle.h; sourceTree = "<group>"; };
 		36A54A87270F186700827994 /* triangle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = triangle.cpp; sourceTree = "<group>"; };
@@ -97,8 +100,10 @@
 		FA50A5C6270DA2600063F1CE /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				366C8A3C2715B00500DE7FA3 /* AreaLight.h */,
 				36EE1143270F1F09003BB6D2 /* Easybmp */,
 				FA91F22B270DA2C000E4B79C /* point.cpp */,
+				366C8A3B2715AF0400DE7FA3 /* Tetrahedon.h */,
 				FA91F22C270DA2C000E4B79C /* point.hpp */,
 				FA91F22E270DA2F700E4B79C /* direction.cpp */,
 				FA91F22F270DA2F700E4B79C /* direction.hpp */,
@@ -110,6 +115,7 @@
 				36A54A86270F183E00827994 /* triangle.h */,
 				36A54A87270F186700827994 /* triangle.cpp */,
 				36A54A89270F1A4F00827994 /* camera.h */,
+				366C8A3A27158FF500DE7FA3 /* material.h */,
 				36EE114E270F2F5C003BB6D2 /* ColorDbl.h */,
 			);
 			path = Classes;

@@ -7,10 +7,11 @@
 #include "room.h"
 #include "triangle.h"
 #include "camera.h"
+#include "Arealight.h"
+#include "Tetrahedon.h"
 
 
 using namespace std;
-
 
 
 int main()
@@ -27,9 +28,24 @@ int main()
     
     // assemble all objects
     Room myRoom;
-//    cout << myRoom.triangles[0].p1 << endl;
     
-    myCamera.render(myRoom.triangles);
+    Tetrahedon myTetrahedon(Point(8.0, 0.0, 0.0));
+    
+    Triangle SceneTriangles[myTetrahedon.numberOfTriangles + myRoom.numberOfTriangles];
+    for (int i = 0; i < myTetrahedon.numberOfTriangles + myRoom.numberOfTriangles; i++) {
+        if (i < myTetrahedon.numberOfTriangles) {
+            SceneTriangles[i] = myTetrahedon.triangles[i];
+        } else {
+            SceneTriangles[i] = myRoom.triangles[i - myTetrahedon.numberOfTriangles];
+        }
+    }
+    
+//    myCamera.render(myRoom.triangles);
+    myCamera.render(SceneTriangles);
+    
+    
+    AreaLight myAreaLight;
+    
     
     return 0;
 }

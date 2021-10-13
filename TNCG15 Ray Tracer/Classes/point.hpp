@@ -19,6 +19,10 @@ public:
     inline Point(){coordinates=glm::vec3();;}
     Point(double _x, double _y, double _z): coordinates(glm::vec3(_x, _y, _z)) {}
     
+    void Normalize(){
+        coordinates = glm::normalize(coordinates);
+    }
+    
     friend ostream& operator<<(ostream &os, const Point &s);
     glm::vec3 get(){
         return coordinates;
