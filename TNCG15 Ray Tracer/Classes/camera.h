@@ -77,8 +77,12 @@ public:
 
                 Ray tempRay(position, target, triangles, sceneAreaLight);
                 auto color = tempRay.triangleHit.color;
+                color.r = color.r * tempRay.directLight;
+                color.g = color.g * tempRay.directLight;
+                color.b = color.b * tempRay.directLight;
+
                 
-                cout << "ray end point: " << tempRay.rayPoint << endl;
+                // cout << "ray end point: " << tempRay.rayPoint << endl;
                 
                 
                 // triangleHit.material.getRay(incoming)
@@ -97,9 +101,9 @@ public:
             }
         }
 
-        auto test = AnImage.WriteToFile("/Users/alex/coding/tncg15-ray-tracer/TNCG15\ Ray\ Tracer/sample.bmp");
+//        auto auto = AnImage.WriteToFile("/Users/jakob/coding/tncg15-ray-tracer/TNCG15\ Ray\ Tracer/sample.bmp");
         /// alex path: /Users/alex/coding/tncg15-ray-tracer/TNCG15\ Ray\ Tracer/sample.bmp
-        /// jakob  path: /Users/jakob/coding/tncg15-ray-tracer/TNCG15\ Ray\ Tracer/sample.bmp
+        auto test = AnImage.WriteToFile("/Users/jakob/coding/tncg15/TNCG15\ Ray\ Tracer/sample.bmp");
         
         if (test)
         {

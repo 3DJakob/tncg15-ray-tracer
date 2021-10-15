@@ -36,4 +36,13 @@ ostream& operator<< (ostream &os, const Point &s) {
     return (os << "X: " << to_string(s.coordinates.x) << " Y: " << to_string(s.coordinates.y) << " Z: " << to_string(s.coordinates.z)  << std::endl);
 }
 
+bool operator== (Point& p1, Point& p2)
+{
+    if (p1.get().x == p2.get().x && p1.get().y == p2.get().y && p1.get().z == p2.get().z) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 #endif // __POINT_H__ 

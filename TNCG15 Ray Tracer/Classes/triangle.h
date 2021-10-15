@@ -78,5 +78,19 @@ private:
      
 };
 
+bool operator== (Triangle& t1, Triangle& t2)
+{
+    if (t1.p1 == t2.p1 && t1.p2 == t2.p1 && t1.p3 == t2.p3) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool operator != (Triangle& t1, Triangle& t2)
+{
+    return t1 == t2 ? false : true;
+}
+
 
 #endif // __TRIANGLE_H__

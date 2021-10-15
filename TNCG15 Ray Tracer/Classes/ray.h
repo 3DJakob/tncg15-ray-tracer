@@ -21,6 +21,7 @@ class Ray {
 public:
     Triangle triangleHit;
     Point rayPoint;
+    double directLight;
     
     
     Ray(Point _startPoint, Point direction, vector<Triangle> triangles, AreaLight sceneAreaLight) {
@@ -35,7 +36,7 @@ public:
             auto res = glm::vec3();
 //            cout << direction << endl;
             bool doesHit = triangle.RayIntersectsTriangle(startPoint, direction.get() - startPoint, res);
-            if (doesHit && res.length() < minDist) {
+            if (doesHit && (res.length() < minDist)) {
 //                cout << "Hit: " << Point(res.x, res.y, res.z) << endl;
                 minDist = res.length();
                 triangleHit = triangle;
@@ -44,22 +45,32 @@ public:
         }
         rayPoint = Point(hitLocation.x, hitLocation.y, hitLocation.z);
         
+        directLight = 0.0;
+        
         // Calculate number of seen pointlights
-//        for(Point light : sceneAreaLight.lightPoints) {
-//            // Check if seen!
-//            for (Triangle triangle : triangles) {
-//
-//            }
-////            bool doesHit = triangle.RayIntersectsTriangle(startPoint, direction.get() - startPoint, res);
-//        }
-        
-        
-        
-        // save start and endpoint and triangle ref
-//        for(Triangle triangle : triangles) {
-////            triangle.rayIntersection(ray, minDistance);
-//
-//        }
+        for(Point light : sceneAreaLight.lightPoints) {
+            // Check if seen!
+//            auto objectTriangles = triangles. // No need to check for intersect with walls here...
+            std::vector<Triangle> objectTriangles(triangles.begin(), triangles.end() - 20);
+            bool doesHit = false;
+            for (Triangle triangle : objectTriangles) {
+                if (triangleHit != triangle) {
+                    glm::vec3 hitPoint;
+                    doesHit = triangle.RayIntersectsTriangle(rayPoint.get(), light.get(), hitPoint);
+                    if (doesHit) {
+                        break;
+                    }
+                } else {
+                    cout << "FOOOO" << endl;
+                }
+                
+            }
+            if (!doesHit) {
+                directLight = directLight + sceneAreaLight.radiance;
+            }
+        }
+     
+        directLight = directLight / sceneAreaLight.numberOfLightPoints;      
     }
 
     void setEnd(Point _end);

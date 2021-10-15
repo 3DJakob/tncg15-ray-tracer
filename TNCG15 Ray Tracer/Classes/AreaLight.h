@@ -20,9 +20,9 @@ class AreaLight
 {
 
 public:
-    Point location = Point(6, 0, 4);
-    int numberOfLightPoints = 10;
-    float radiance = 20;
+    Point location = Point(-5, 0, 4);
+    float numberOfLightPoints = 10;
+    float radiance = 1.0;
     vector<Point> lightPoints;
 
     float sizeX = 1.0;

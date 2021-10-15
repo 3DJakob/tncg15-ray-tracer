@@ -35,38 +35,24 @@ int main()
 {
 //    glm::vec4 Position = glm::vec4(glm::vec3(0.0), 1.0);
     cout << "Hello World" << endl;
-    cout << Point() << endl;
     
-//    Triangle myTriangle(Point(), Point(1.0, 0.0, 0.0), Point(0.0, 0.0, 1.0));
-//    cout << myTriangle.p1 << endl;
+    Point p1 = Point(-1.0, 0.0, 0.0);
+    Point p2 = Point(-1.0, 1.0, 0.0);
+    Point p3 = Point(-1.0, 1.0, 1.0);
+    Triangle t1 = Triangle(p1, p2, p3);
+    Triangle t2 = Triangle(p1, p2, p3);
+    if (t1 == t2) {
+        cout << "EQUAL" << endl;
+    }
     
     Camera myCamera(Point(-1.0, 0.0, 0.0), Point(0.0, 0.0, 0.0), Point(0.0, 0.0, -1.0));
-    cout << myCamera.position << endl;
     
     // assemble all objects
     Room myRoom;
-    
     Tetrahedon myTetrahedon(Point(8.0, 3.0, -1.0));
     
     vector<Triangle> allTriangles = myTetrahedon.triangleList + myRoom.triangles;
-    cout << allTriangles.size() << endl;
-    
-    //myRoom.triangles.insert( myRoom.triangles.end(), myTetrahedon.triangleList.begin(), myTetrahedon.triangleList.end() );
-    //cout << myRoom.triangles.size() << endl;
-    
-//    for (Triangle i: myRoom.triangles)
-//        cout << i.p1 << " " << i.p2 << " " << i.p3 << endl;
-    
-//    vector<Triangle> SceneTriangles(myRoom.triangles.size() + myTetrahedon.triangles.size());
-//        merge(myRoom.triangles.begin(),
-//              myRoom.triangles.end(),
-//              myTetrahedon.triangles.begin(),
-//              myTetrahedon.triangles.end(),
-//              SceneTriangles.begin());
-    
-
     AreaLight myAreaLight;
-//    myCamera.render(myRoom.triangles);
     myCamera.render(allTriangles, myAreaLight);
     
 
