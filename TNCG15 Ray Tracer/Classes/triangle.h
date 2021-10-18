@@ -80,7 +80,7 @@ private:
 
 bool operator== (Triangle& t1, Triangle& t2)
 {
-    if (t1.p1 == t2.p1 && t1.p2 == t2.p1 && t1.p3 == t2.p3) {
+    if (t1.p1 == t2.p1 && t1.p2 == t2.p2 && t1.p3 == t2.p3) {
         return true;
     } else {
         return false;
