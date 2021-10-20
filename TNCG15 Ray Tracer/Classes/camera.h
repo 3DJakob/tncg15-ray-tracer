@@ -75,11 +75,12 @@ public:
 //                cout << "TARGET: " << target << endl;
                 
 
-                Ray tempRay(position, target, triangles, sceneAreaLight);
-                auto color = tempRay.triangleHit.color;
-                color.r = color.r * tempRay.directLight;
-                color.g = color.g * tempRay.directLight;
-                color.b = color.b * tempRay.directLight;
+                Ray tempRay;
+
+                auto color = tempRay.cast(position, target, triangles, sceneAreaLight, 23);
+                // color.r = color.r * tempRay.directLight;
+                // color.g = color.g * tempRay.directLight;
+                // color.b = color.b * tempRay.directLight;
 
                 
                 // cout << "ray end point: " << tempRay.rayPoint << endl;

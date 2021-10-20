@@ -11,11 +11,13 @@ class Triangle
 public:
     Point p1, p2, p3;
     ColorDbl color;
+    glm::vec3 rayNormal;
      
     Triangle() {
         p1 = Point();
         p2 = Point();
         p3 = Point();
+        rayNormal = getNormal();
     };
 //     Triangle(Point _p1, Point _p2, Point _p3);
 //     ~Triangle();
@@ -23,6 +25,7 @@ public:
         p1 = p1in;
         p2 = p2in;
         p3 = p3in;
+        rayNormal = getNormal();
         color = ColorDbl(255.0, 0, 0);
     }
     
@@ -30,6 +33,7 @@ public:
         p1 = p1in;
         p2 = p2in;
         p3 = p3in;
+        rayNormal = getNormal();
         color = colorIn;
     }
     
@@ -71,11 +75,21 @@ public:
             return false;
     }
 
-    const Point &getNormal() const;
-
 private:
-     glm::vec3 normal;
-     
+//    const glm::vec3 &getNormal() const;
+    glm::vec3 &getNormal() {
+        glm::vec3 vertex0 = p1.get();
+        glm::vec3 vertex1 = p2.get();
+        glm::vec3 vertex2 = p3.get();
+        glm::vec3 edge1, edge2, normal;
+
+        edge1 = vertex1 - vertex0;
+        edge2 = vertex2 - vertex0;
+        auto res = glm::cross(edge1, edge2);
+        normal = glm::normalize(res);
+        
+        return normal;
+    }
 };
 
 bool operator== (Triangle& t1, Triangle& t2)

@@ -14,71 +14,126 @@
 #include "point.hpp"
 #include "AreaLight.h"
 
+class Ray
+{
 
-class Ray {
-   
-    
 public:
     Triangle triangleHit;
     Point rayPoint;
     double directLight;
-    
-    
-    Ray(Point _startPoint, Point direction, vector<Triangle> triangles, AreaLight sceneAreaLight) {
+
+    Ray()
+    {
+    }
+
+    void CreateLocalCoordinateSystem(const glm::vec3 &normal, const glm::vec3 &incoming, glm::vec3 &axis1, glm::vec3 &axis2)
+    {
+        axis1 = glm::normalize(glm::cross(normal, incoming));
+        axis2 = glm::normalize(glm::cross(axis1, normal));
+    }
+
+    // Cast rays untill color returns
+    ColorDbl cast(Point _startPoint, Point direction, vector<Triangle> triangles, AreaLight sceneAreaLight, int depth)
+    {
         triangleHit = triangles[0];
         startPoint = _startPoint.get();
-        
-        
+
         double minDist = 9999;
         glm::vec3 hitLocation;
-        
-        for (Triangle triangle : triangles) {
+
+        for (Triangle triangle : triangles)
+        {
             auto res = glm::vec3();
-//            cout << direction << endl;
+            //            cout << direction << endl;
             bool doesHit = triangle.RayIntersectsTriangle(startPoint, direction.get() - startPoint, res);
-            if (doesHit && (res.length() < minDist)) {
-//                cout << "Hit: " << Point(res.x, res.y, res.z) << endl;
+            if (doesHit && (res.length() < minDist))
+            {
+                //                cout << "Hit: " << Point(res.x, res.y, res.z) << endl;
                 minDist = res.length();
                 triangleHit = triangle;
                 hitLocation = res;
             }
         }
         rayPoint = Point(hitLocation.x, hitLocation.y, hitLocation.z);
-        
+
         directLight = 0.0;
-        
+
         // Calculate number of seen pointlights
-        for(Point light : sceneAreaLight.lightPoints) {
+        for (Point light : sceneAreaLight.lightPoints)
+        {
             // Check if seen!
-//            auto objectTriangles = triangles. // No need to check for intersect with walls here...
+            //            auto objectTriangles = triangles. // No need to check for intersect with walls here...
             std::vector<Triangle> objectTriangles(triangles.begin(), triangles.end() - 20);
             bool doesHit = false;
-            for (Triangle triangle : objectTriangles) {
-                if (triangleHit != triangle) {
+            for (Triangle triangle : objectTriangles)
+            {
+                if (triangleHit != triangle)
+                {
                     glm::vec3 hitPoint;
                     doesHit = triangle.RayIntersectsTriangle(rayPoint.get(), light.get(), hitPoint);
-                    if (doesHit) {
+                    if (doesHit)
+                    {
                         break;
                     }
-                } else {
-                    
                 }
-                
             }
-            if (!doesHit) {
+            if (!doesHit)
+            {
                 directLight = directLight + sceneAreaLight.radiance;
             }
+            else
+            {
+                // Is in shadow!
+            }
         }
-     
-        directLight = directLight / sceneAreaLight.numberOfLightPoints;      
+
+        directLight = directLight / sceneAreaLight.numberOfLightPoints;
+
+        if (depth == 0)
+        {
+            return triangleHit.color * directLight;
+        }
+
+        // russian roulette
+        float p = 0.0;
+        float random = (float)rand() / RAND_MAX;
+        if (random < p)
+        {
+            return triangleHit.color * directLight;
+        }
+        else
+        {
+            // run again!
+            // res + triangleHit.color * directLight
+            Ray tempRay;
+            glm::vec3 axis1;
+            glm::vec3 axis2;
+
+            auto normal = triangleHit.rayNormal;
+            auto incoming = _startPoint.get() - direction.get();
+
+            tempRay.CreateLocalCoordinateSystem(normal, incoming, axis1, axis2);
+
+            auto outgoing = normal * glm::dot(normal, incoming);
+            //            cout << glm::dot(normal, incoming) << endl;
+            outgoing = outgoing - axis2 * glm::dot(incoming, axis2);
+            //            cout << " X: " << outgoing.x << " Y: " << outgoing.y << " Z: " << outgoing.z << endl;
+
+            outgoing = rayPoint.get() + outgoing;
+            rayPoint.add(outgoing * -0.001f);
+
+            auto color = tempRay.cast(rayPoint, Point(outgoing.x, outgoing.y, outgoing.z), triangles, sceneAreaLight, 0);
+            return color;
+            //            return color + triangleHit.color * directLight;
+        }
+
+        return triangleHit.color * directLight;
     }
 
     void setEnd(Point _end);
     Point getEndPoint();
 
     const Point &getStart() const;
-
-
 
 private:
     glm::vec3 startPoint;

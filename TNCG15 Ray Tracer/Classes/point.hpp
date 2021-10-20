@@ -27,6 +27,10 @@ public:
     glm::vec3 get(){
         return coordinates;
     }
+
+    void add(glm::vec3 toAdd) {
+        coordinates = coordinates + toAdd;
+    }
     
 private:
     glm::vec3 coordinates;

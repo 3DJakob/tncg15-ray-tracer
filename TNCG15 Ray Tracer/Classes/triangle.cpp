@@ -2,6 +2,7 @@
 #include <string.h>
 #include "point.hpp"
 using namespace std;
+using namespace glm;
 
 //Triangle::Triangle() = default;
 
@@ -11,7 +12,17 @@ using namespace std;
 
 //Triangle::~Triangle() = default;
 
-const Point &Triangle::getNormal() const {
+const vec3 &Triangle::getNormal() const {
+    vec3 vertex0 = p1.get();
+    vec3 vertex1 = p2.get();
+    vec3 vertex2 = p3.get();
+    vec3 edge1, edge2, res, normal;
+
+    edge1 = vertex1 - vertex0;
+    edge2 = vertex2 - vertex0;
+    res = glm::dot(edge1, edge2);
+    normal = gml::normalize(res);
+    
     return normal;
 }
 

@@ -48,10 +48,10 @@ public:
         // tetrahedronPoints.push_back(p2);
         // tetrahedronPoints.push_back(p3);
 
-        triangleList.push_back(Triangle(p0, p3, p1, magenta));
+        triangleList.push_back(Triangle(p0, p3, p1, red));
         triangleList.push_back(Triangle(p0, p1, p2, green));
         triangleList.push_back(Triangle(p0, p2, p3, red));
-        triangleList.push_back(Triangle(p1, p2, p3, magenta));
+        triangleList.push_back(Triangle(p1, p2, p3, blue));
 
     }
 
