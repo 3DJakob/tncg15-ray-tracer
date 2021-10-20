@@ -22,7 +22,7 @@ class AreaLight
 public:
     Point location = Point(-5, 0, 4);
     float numberOfLightPoints = 10;
-    float radiance = 1.0;
+    float radiance = 0.5;
     vector<Point> lightPoints;
 
     float sizeX = 1.0;

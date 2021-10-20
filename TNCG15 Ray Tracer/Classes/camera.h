@@ -50,7 +50,7 @@ public:
         return Point(perpendicular.x, perpendicular.y, perpendicular.z);
     }
 
-    void render(vector<Triangle> triangles, AreaLight sceneAreaLight)
+    void render(vector<Triangle> triangles, AreaLight sceneAreaLight, int samples)
     {
 
         cout << "calc axis:" << endl;
@@ -59,6 +59,8 @@ public:
 
         AnImage.SetSize(width + 1, height + 1);
         AnImage.SetBitDepth(8);
+
+        int completed;
 
         for (int i = 0; i <= width; i++)
         {
@@ -70,36 +72,26 @@ public:
                     pointOfInterest.get().y + cameraPlaneY.get().y * ((i - (width / 2)) / width)*2 + cameraPlaneZ.get().y * ((j - (height / 2)) / height)*2,
                     pointOfInterest.get().z + cameraPlaneY.get().z * ((i - (width / 2)) / width)*2 + cameraPlaneZ.get().z * ((j - (height / 2)) / height)*2
                 );
-                
-//                cout << "START: " << position << endl;
-//                cout << "TARGET: " << target << endl;
-                
 
                 Ray tempRay;
 
-                auto color = tempRay.cast(position, target, triangles, sceneAreaLight, 23);
-                // color.r = color.r * tempRay.directLight;
-                // color.g = color.g * tempRay.directLight;
-                // color.b = color.b * tempRay.directLight;
+                ColorDbl resColor = ColorDbl(0, 0, 0);
 
-                
-                // cout << "ray end point: " << tempRay.rayPoint << endl;
-                
-                
-                // triangleHit.material.getRay(incoming)
-                // push new ray to array
-                // pepeat!!
-                
-                // backwards loop array importance * accumulated color
-                
-                // save importance move on
+                for (int i = 0; i < samples; i++)
+                {
+                    resColor = resColor + (tempRay.cast(position, target, triangles, sceneAreaLight, 23) / samples);
+                }
 
+                completed++;
+                
                 RGBApixel Temp = AnImage.GetPixel(i, j);
-                Temp.Blue = color.b;
-                Temp.Green = color.g;
-                Temp.Red = color.r;
+                Temp.Blue = resColor.b;
+                Temp.Green = resColor.g;
+                Temp.Red = resColor.r;
                 AnImage.SetPixel(i, j, Temp);
             }
+            cout << completed * 100 / (height * width) << "%" << endl;
+            cout.flush();
         }
 
 //        auto auto = AnImage.WriteToFile("/Users/jakob/coding/tncg15-ray-tracer/TNCG15\ Ray\ Tracer/sample.bmp");

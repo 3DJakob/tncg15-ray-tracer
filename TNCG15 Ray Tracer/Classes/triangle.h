@@ -12,12 +12,14 @@ public:
     Point p1, p2, p3;
     ColorDbl color;
     glm::vec3 rayNormal;
+    float roughness;
      
     Triangle() {
         p1 = Point();
         p2 = Point();
         p3 = Point();
         rayNormal = getNormal();
+        roughness = 1.0f;
     };
 //     Triangle(Point _p1, Point _p2, Point _p3);
 //     ~Triangle();

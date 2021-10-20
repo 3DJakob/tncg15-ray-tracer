@@ -34,7 +34,7 @@ std::vector<T> &operator+=(std::vector<T> &A, const std::vector<T> &B)
 int main()
 {
 //    glm::vec4 Position = glm::vec4(glm::vec3(0.0), 1.0);
-    cout << "Hello World" << endl;
+    cout << "Tracer myTracer" << endl;
     
 //    Point p1 = Point(0.0, 0.0, 1.0);
 //    Point p2 = Point(1.0, 0.0, 0.0);
@@ -55,7 +55,7 @@ int main()
     
     vector<Triangle> allTriangles = myTetrahedon.triangleList + myRoom.triangles;
     AreaLight myAreaLight;
-    myCamera.render(allTriangles, myAreaLight);
+    myCamera.render(allTriangles, myAreaLight, 4);
     
     
     

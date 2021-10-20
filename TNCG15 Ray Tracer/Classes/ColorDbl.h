@@ -23,16 +23,24 @@ public:
     ColorDbl(double _r,double _g,double _b): r(_r), g(_g), b(_b) {}
 };
 
+// ColorDbl * ColorDbl
 ColorDbl operator*(const ColorDbl& col1, const ColorDbl& col2){
-    return ColorDbl(col1.r * col2.r, col1.g * col2.g, col2.b * col1.b); 
+    return ColorDbl(col1.r * col2.r, col1.g * col2.g, col1.b * col2.b); 
 }
 
+// ColorDbl * double
 ColorDbl operator*(const ColorDbl& col, const double& doubl){
     return ColorDbl(doubl * col.r, doubl * col.g, doubl * col.b);
 }
 
+// ColorDbl + ColorDbl
 ColorDbl operator+(const ColorDbl& col1, const ColorDbl& col2){
-    return ColorDbl(col1.r + col2.r, col1.g + col2.g, col2.b + col1.b); 
+    return ColorDbl(col1.r + col2.r, col1.g + col2.g, col1.b + col2.b); 
+}
+
+// ColorDbl / int
+ColorDbl operator/(const ColorDbl& col1, const int& number){
+    return ColorDbl(col1.r / number, col1.g / number, col1.b / number); 
 }
 
 #endif /* ColorDbl_h */

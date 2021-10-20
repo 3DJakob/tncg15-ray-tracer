@@ -114,17 +114,26 @@ public:
 
             tempRay.CreateLocalCoordinateSystem(normal, incoming, axis1, axis2);
 
-            auto outgoing = normal * glm::dot(normal, incoming);
-            //            cout << glm::dot(normal, incoming) << endl;
-            outgoing = outgoing - axis2 * glm::dot(incoming, axis2);
-            //            cout << " X: " << outgoing.x << " Y: " << outgoing.y << " Z: " << outgoing.z << endl;
+            glm::vec3 outgoing = glm::vec3(0.0, 0.0, 0.0);
+            
+            if (false) {
+                // Perfect reflection
+                outgoing = normal * glm::dot(normal, incoming);
+                outgoing = outgoing - axis2 * glm::dot(incoming, axis2);
+            } else {
+                outgoing = normal * ((float)rand() / RAND_MAX);
+                outgoing = outgoing + axis1 * ((float)rand() / RAND_MAX - 0.5f) * 2.0f;
+                outgoing = outgoing + axis2 * ((float)rand() / RAND_MAX - 0.5f) * 2.0f;
+            }
 
+            // .cast() wants a target in 3d space not a direction
             outgoing = rayPoint.get() + outgoing;
-            rayPoint.add(outgoing * -0.001f);
+            
+            rayPoint.add( outgoing * -0.001f);
 
             auto color = tempRay.cast(rayPoint, Point(outgoing.x, outgoing.y, outgoing.z), triangles, sceneAreaLight, 0);
-            return color;
-            //            return color + triangleHit.color * directLight;
+            // return color;
+            return color + triangleHit.color * directLight;
         }
 
         return triangleHit.color * directLight;
