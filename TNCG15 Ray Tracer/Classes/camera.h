@@ -27,6 +27,15 @@ public:
     double height = 480;
     // int width = 640;
     double width = 480;
+    
+    double lastProgress = 0;
+    
+    void displayProgress (double progress) {
+        if (progress - lastProgress > 5) {
+            lastProgress = progress;
+            cout << "#";
+        }
+    }
 
     Camera(Point positionIn, Point pointOfInterestIn, Point pointOfInterestTopIn)
     {
@@ -61,6 +70,8 @@ public:
         AnImage.SetBitDepth(8);
 
         int completed;
+        
+        cout << "____________________" << endl;
 
         for (int i = 0; i <= width; i++)
         {
@@ -83,6 +94,8 @@ public:
                 }
 
                 completed++;
+                displayProgress((completed * 100) / (height * width));
+                
                 
                 RGBApixel Temp = AnImage.GetPixel(i, j);
                 Temp.Blue = resColor.b;
@@ -90,13 +103,13 @@ public:
                 Temp.Red = resColor.r;
                 AnImage.SetPixel(i, j, Temp);
             }
-            cout << completed * 100 / (height * width) << "%" << endl;
-            cout.flush();
         }
 
 //        auto auto = AnImage.WriteToFile("/Users/jakob/coding/tncg15-ray-tracer/TNCG15\ Ray\ Tracer/sample.bmp");
         /// alex path: /Users/alex/coding/tncg15-ray-tracer/TNCG15\ Ray\ Tracer/sample.bmp
         auto test = AnImage.WriteToFile("/Users/jakob/coding/tncg15/TNCG15\ Ray\ Tracer/sample.bmp");
+        
+        cout << endl;
         
         if (test)
         {
