@@ -43,7 +43,7 @@ int main()
     
     vector<Triangle> allTriangles = myTetrahedon.triangleList + myRoom.triangles;
     AreaLight myAreaLight;
-    myCamera.render(allTriangles, myAreaLight, 24 );
+    myCamera.render(allTriangles, myAreaLight, 4 );
     
     return 0;
 }

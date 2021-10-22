@@ -118,7 +118,7 @@ public:
 
             glm::vec3 outgoing = glm::vec3(0.0, 0.0, 0.0);
             
-            if (false) {
+            if (triangleHit.roughness == 0.0) {
                 // Perfect reflection
                 outgoing = normal * glm::dot(normal, incoming);
                 outgoing = outgoing - axis2 * glm::dot(incoming, axis2);
@@ -135,7 +135,7 @@ public:
 
             auto color = tempRay.cast(rayPoint, Point(outgoing.x, outgoing.y, outgoing.z), triangles, sceneAreaLight, depth, importance * 0.8);
             // return color;
-            return color * triangleHit.color + triangleHit.color * directLight * importance;
+            return triangleHit.roughness == 0.0 ? color : color * triangleHit.color + triangleHit.color * directLight * importance;
         }
 
         // return triangleHit.color * directLight;

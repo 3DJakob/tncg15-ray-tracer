@@ -21,7 +21,7 @@ class AreaLight
 
 public:
     Point location = Point(-5, 0, 4);
-    float numberOfLightPoints = 40;
+    float numberOfLightPoints = 4;
     float radiance = 0.5;
     vector<Point> lightPoints;
 

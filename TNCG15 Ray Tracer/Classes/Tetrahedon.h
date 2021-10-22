@@ -43,28 +43,12 @@ public:
         Point p2 = Point(_p0.get().x, -scale + _p0.get().y, -scale +_p0.get().z);  //left
         Point p3 = Point(_p0.get().x, scale + _p0.get().y, -scale +_p0.get().z);  //right
 
-        // tetrahedronPoints.push_back(p0);
-        // tetrahedronPoints.push_back(p1);
-        // tetrahedronPoints.push_back(p2);
-        // tetrahedronPoints.push_back(p3);
-
-        triangleList.push_back(Triangle(p0, p3, p1, red));
-        triangleList.push_back(Triangle(p0, p1, p2, green));
-        triangleList.push_back(Triangle(p0, p2, p3, red));
-        triangleList.push_back(Triangle(p1, p2, p3, blue));
+        triangleList.push_back(Triangle(p0, p3, p1, red, 0.0));
+        triangleList.push_back(Triangle(p0, p1, p2, green, 0.0));
+        triangleList.push_back(Triangle(p0, p2, p3, red, 0.0));
+        triangleList.push_back(Triangle(p1, p2, p3, blue, 0.0));
 
     }
-
-
-    // Triangle triangles[1]
-    //     {
-    //         // Roof
-    //         // Triangle(tetrahedronPoints[0], tetrahedronPoints[2], tetrahedronPoints[1], blue),
-    //         // Triangle(tetrahedronPoints[0], tetrahedronPoints[1], tetrahedronPoints[3], magenta),
-    //         // Triangle(tetrahedronPoints[0], tetrahedronPoints[3], tetrahedronPoints[2], blue),
-    //         // Triangle(tetrahedronPoints[1], tetrahedronPoints[2], tetrahedronPoints[3], magenta),
-           
-    // };
 
 
                              friend ostream &
