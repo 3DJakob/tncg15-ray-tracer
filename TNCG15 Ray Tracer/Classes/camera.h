@@ -65,7 +65,6 @@ public:
 
     static void renderPixel(int i, int j, int width, int height, int samples, vector<Triangle> triangles, AreaLight sceneAreaLight, ColorDbl &resColor, Point target, Point position)
     {
-        resColor = ColorDbl(0, 0, 0);
 
         // Unecessary to render pixels outside viewport
         if (i <= width)
@@ -74,15 +73,14 @@ public:
 
             for (int i = 0; i < samples; i++)
             {
-                resColor = resColor + (tempRay.cast(position, target, triangles, sceneAreaLight, 23) / samples);
+                resColor = resColor + (tempRay.cast(position, target, triangles, sceneAreaLight, 6, 1.0) / samples);
             }
         }
-        // completed++;
-        // displayProgress((completed * 100) / (height * width));
     }
 
     void setImagePixel(int x, int y, ColorDbl color)
     {
+        // cout << "RED: " << color.r << " GREEN: " << color.g << " BLUE " << color.b << endl;
         if (x < width)
         {
             RGBApixel Temp2 = AnImage.GetPixel(x, y);

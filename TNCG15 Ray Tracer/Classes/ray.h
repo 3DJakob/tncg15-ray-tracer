@@ -33,7 +33,7 @@ public:
     }
 
     // Cast rays untill color returns
-    ColorDbl cast(Point _startPoint, Point direction, vector<Triangle> triangles, AreaLight sceneAreaLight, int depth)
+    ColorDbl cast(Point _startPoint, Point direction, vector<Triangle> triangles, AreaLight sceneAreaLight, int depth, float importance)
     {
         triangleHit = triangles[0];
         startPoint = _startPoint.get();
@@ -89,9 +89,11 @@ public:
 
         directLight = directLight / sceneAreaLight.numberOfLightPoints;
 
+        depth--;
+
         if (depth == 0)
         {
-            return triangleHit.color * directLight;
+            return triangleHit.color * directLight * importance;
         }
 
         // russian roulette
@@ -99,7 +101,7 @@ public:
         float random = (float)rand() / RAND_MAX;
         if (random < p)
         {
-            return triangleHit.color * directLight;
+            return triangleHit.color * directLight * importance;
         }
         else
         {
@@ -131,12 +133,12 @@ public:
             
             rayPoint.add( outgoing * -0.001f);
 
-            auto color = tempRay.cast(rayPoint, Point(outgoing.x, outgoing.y, outgoing.z), triangles, sceneAreaLight, 0);
+            auto color = tempRay.cast(rayPoint, Point(outgoing.x, outgoing.y, outgoing.z), triangles, sceneAreaLight, depth, importance * 0.8);
             // return color;
-            return color + triangleHit.color * directLight;
+            return color * triangleHit.color + triangleHit.color * directLight * importance;
         }
 
-        return triangleHit.color * directLight;
+        // return triangleHit.color * directLight;
     }
 
     void setEnd(Point _end);

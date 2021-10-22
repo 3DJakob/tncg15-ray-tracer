@@ -21,12 +21,12 @@ class AreaLight
 
 public:
     Point location = Point(-5, 0, 4);
-    float numberOfLightPoints = 10;
+    float numberOfLightPoints = 40;
     float radiance = 0.5;
     vector<Point> lightPoints;
 
-    float sizeX = 1.0;
-    float sizeY = 1.0;
+    float sizeX = 2.0;
+    float sizeY = 2.0;
     //  ColorDbl green = ColorDbl(0.0, 255.0, 0.0);
 
     AreaLight()
