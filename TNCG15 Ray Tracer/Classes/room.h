@@ -53,7 +53,7 @@ public:
         triangles.push_back(Triangle(points[5], points[10], points[11], blue));
         triangles.push_back(Triangle(points[5], points[4], points[10],  blue));
         
-        triangles.push_back(Triangle(points[4], points[9], points[10],orange));
+        triangles.push_back(Triangle(points[4], points[9], points[10], orange));
         triangles.push_back(Triangle(points[3], points[9], points[4], orange));
         triangles.push_back(Triangle(points[3], points[8], points[9] ));
         triangles.push_back(Triangle(points[2], points[8], points[3] ));

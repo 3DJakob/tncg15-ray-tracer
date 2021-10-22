@@ -10,6 +10,8 @@
 #include "EasyBMP.h"
 #include "ray.h"
 #include <vector>
+#include <functional>
+#include <thread>
 
 #include "point.hpp"
 #include "triangle.h"
@@ -27,11 +29,13 @@ public:
     double height = 480;
     // int width = 640;
     double width = 480;
-    
+
     double lastProgress = 0;
-    
-    void displayProgress (double progress) {
-        if (progress - lastProgress > 5) {
+
+    void displayProgress(double progress)
+    {
+        if (progress - lastProgress > 5)
+        {
             lastProgress = progress;
             cout << "#";
         }
@@ -59,6 +63,44 @@ public:
         return Point(perpendicular.x, perpendicular.y, perpendicular.z);
     }
 
+    static void renderPixel(int i, int j, int width, int height, int samples, vector<Triangle> triangles, AreaLight sceneAreaLight, ColorDbl &resColor, Point target, Point position)
+    {
+        resColor = ColorDbl(0, 0, 0);
+
+        // Unecessary to render pixels outside viewport
+        if (i <= width)
+        {
+            Ray tempRay;
+
+            for (int i = 0; i < samples; i++)
+            {
+                resColor = resColor + (tempRay.cast(position, target, triangles, sceneAreaLight, 23) / samples);
+            }
+        }
+        // completed++;
+        // displayProgress((completed * 100) / (height * width));
+    }
+
+    void setImagePixel(int x, int y, ColorDbl color)
+    {
+        if (x < width)
+        {
+            RGBApixel Temp2 = AnImage.GetPixel(x, y);
+            Temp2.Blue = color.b;
+            Temp2.Green = color.g;
+            Temp2.Red = color.r;
+            AnImage.SetPixel(x + 1, y, Temp2);
+        }
+    }
+
+    Point getTarget(Point pointOfInterest, Point cameraPlaneY, Point cameraPlaneZ, int i, int j)
+    {
+        return Point(
+            pointOfInterest.get().x + cameraPlaneY.get().x * ((i - (width / 2)) / width) * 2 + cameraPlaneZ.get().x * ((j - (height / 2)) / height) * 2,
+            pointOfInterest.get().y + cameraPlaneY.get().y * ((i - (width / 2)) / width) * 2 + cameraPlaneZ.get().y * ((j - (height / 2)) / height) * 2,
+            pointOfInterest.get().z + cameraPlaneY.get().z * ((i - (width / 2)) / width) * 2 + cameraPlaneZ.get().z * ((j - (height / 2)) / height) * 2);
+    }
+
     void render(vector<Triangle> triangles, AreaLight sceneAreaLight, int samples)
     {
 
@@ -70,47 +112,63 @@ public:
         AnImage.SetBitDepth(8);
 
         int completed;
-        
+
         cout << "____________________" << endl;
 
-        for (int i = 0; i <= width; i++)
+        for (int i = 0; i <= width; i = i + 4)
         {
             for (int j = 0; j <= height; j++)
             {
-                // 2 x 2 camera plane
-                auto target = Point(
-                    pointOfInterest.get().x + cameraPlaneY.get().x * ((i - (width / 2)) / width)*2 + cameraPlaneZ.get().x * ((j - (height / 2)) / height)*2,
-                    pointOfInterest.get().y + cameraPlaneY.get().y * ((i - (width / 2)) / width)*2 + cameraPlaneZ.get().y * ((j - (height / 2)) / height)*2,
-                    pointOfInterest.get().z + cameraPlaneY.get().z * ((i - (width / 2)) / width)*2 + cameraPlaneZ.get().z * ((j - (height / 2)) / height)*2
-                );
 
-                Ray tempRay;
+                auto target1 = getTarget(pointOfInterest, cameraPlaneY, cameraPlaneZ, i, j);
+                auto target2 = getTarget(pointOfInterest, cameraPlaneY, cameraPlaneZ, i + 1, j);
+                auto target3 = getTarget(pointOfInterest, cameraPlaneY, cameraPlaneZ, i + 2, j);
+                auto target4 = getTarget(pointOfInterest, cameraPlaneY, cameraPlaneZ, i + 3, j);
+                auto target5 = getTarget(pointOfInterest, cameraPlaneY, cameraPlaneZ, i + 4, j);
+                auto target6 = getTarget(pointOfInterest, cameraPlaneY, cameraPlaneZ, i + 5, j);
+                auto target7 = getTarget(pointOfInterest, cameraPlaneY, cameraPlaneZ, i + 6, j);
+                auto target8 = getTarget(pointOfInterest, cameraPlaneY, cameraPlaneZ, i + 7, j);
 
-                ColorDbl resColor = ColorDbl(0, 0, 0);
+                ColorDbl resColor1, resColor2, resColor3, resColor4, resColor5, resColor6, resColor7, resColor8;
 
-                for (int i = 0; i < samples; i++)
-                {
-                    resColor = resColor + (tempRay.cast(position, target, triangles, sceneAreaLight, 23) / samples);
-                }
+                thread pixel1(renderPixel, i, j, width, height, samples, triangles, sceneAreaLight, ref(resColor1), target1, position);
+                thread pixel2(renderPixel, i + 1, j, width, height, samples, triangles, sceneAreaLight, ref(resColor2), target2, position);
+                thread pixel3(renderPixel, i + 2, j, width, height, samples, triangles, sceneAreaLight, ref(resColor3), target3, position);
+                thread pixel4(renderPixel, i + 3, j, width, height, samples, triangles, sceneAreaLight, ref(resColor4), target4, position);
+                thread pixel5(renderPixel, i + 4, j, width, height, samples, triangles, sceneAreaLight, ref(resColor5), target5, position);
+                thread pixel6(renderPixel, i + 5, j, width, height, samples, triangles, sceneAreaLight, ref(resColor6), target6, position);
+                thread pixel7(renderPixel, i + 6, j, width, height, samples, triangles, sceneAreaLight, ref(resColor7), target7, position);
+                thread pixel8(renderPixel, i + 7, j, width, height, samples, triangles, sceneAreaLight, ref(resColor8), target8, position);
 
-                completed++;
+                pixel1.join();
+                pixel2.join();
+                pixel3.join();
+                pixel4.join();
+                pixel5.join();
+                pixel6.join();
+                pixel7.join();
+                pixel8.join();
+
+                completed = completed + 4;
                 displayProgress((completed * 100) / (height * width));
-                
-                
-                RGBApixel Temp = AnImage.GetPixel(i, j);
-                Temp.Blue = resColor.b;
-                Temp.Green = resColor.g;
-                Temp.Red = resColor.r;
-                AnImage.SetPixel(i, j, Temp);
+
+                setImagePixel(i, j, resColor1);
+                setImagePixel(i + 1, j, resColor2);
+                setImagePixel(i + 2, j, resColor3);
+                setImagePixel(i + 3, j, resColor4);
+                setImagePixel(i + 4, j, resColor5);
+                setImagePixel(i + 5, j, resColor6);
+                setImagePixel(i + 6, j, resColor7);
+                setImagePixel(i + 7, j, resColor8);
             }
         }
 
-//        auto auto = AnImage.WriteToFile("/Users/jakob/coding/tncg15-ray-tracer/TNCG15\ Ray\ Tracer/sample.bmp");
+        //        auto auto = AnImage.WriteToFile("/Users/jakob/coding/tncg15-ray-tracer/TNCG15\ Ray\ Tracer/sample.bmp");
         /// alex path: /Users/alex/coding/tncg15-ray-tracer/TNCG15\ Ray\ Tracer/sample.bmp
         auto test = AnImage.WriteToFile("/Users/jakob/coding/tncg15/TNCG15\ Ray\ Tracer/sample.bmp");
-        
+
         cout << endl;
-        
+
         if (test)
         {
             cout << "success!" << endl;

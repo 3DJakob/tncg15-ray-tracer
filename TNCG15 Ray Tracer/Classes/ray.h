@@ -95,7 +95,7 @@ public:
         }
 
         // russian roulette
-        float p = 0.0;
+        float p = 0.25;
         float random = (float)rand() / RAND_MAX;
         if (random < p)
         {
