@@ -21,7 +21,7 @@ public:
     Point position;
     double radius;
     
-    ColorDbl color;
+    ColorDbl color = ColorDbl(255.0, 0.0, 0.0);
     float roughness = 1.0f;
     float emission = 0.0f;
 
@@ -35,6 +35,14 @@ public:
         position = inPosition;
         radius = inRadius;
     }
+    
+    Sphere(Point inPosition, double inRadius, ColorDbl colorIn, float roughnessIn)
+    {
+        position = inPosition;
+        radius = inRadius;
+        color = colorIn;
+        roughness = roughnessIn;
+    }
 
     bool RayIntersectsSphere(glm::vec3 start, glm::vec3 inDirection, glm::vec3 &outIntersectionPoint)
     {
@@ -43,7 +51,7 @@ public:
         float d1, d2;
         glm::vec3 direction = glm::normalize(inDirection);
         auto startPoint = start;
-        // cout << "X: " << direction.x << " Y: " << direction.y << " Z: " << direction.z << endl;
+        
         float a = glm::dot(direction, direction);
         float b = 2.0 * glm::dot(direction, (startPoint - position.get()));
         float c = glm::dot((startPoint - position.get()), (startPoint - position.get())) - pow(radius, 2);

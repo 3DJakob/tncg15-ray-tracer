@@ -20,8 +20,8 @@ class AreaLight
 {
 
 public:
-    Point location = Point(5, 0, 4);
-    float numberOfLightPoints = 4;
+    Point location = Point(5, 0, 4.9);
+    float numberOfLightPoints = 60;
     float radiance = 0.5;
     vector<Point> lightPoints;
 
@@ -47,6 +47,7 @@ public:
         Point p2 = Point(location.get().x + sizeX / 2, location.get().y - sizeY / 2, location.get().z );  //left
         Point p3 = Point(location.get().x + sizeX / 2, location.get().y + sizeY / 2, location.get().z );  //right
 
+        ColorDbl white = ColorDbl(255.0, 255.0, 255.0);
         triangles.push_back(Triangle(p0, p1, p2, white, 0.0, 1.0));
         triangles.push_back(Triangle(p1, p3, p2, white, 0.0, 1.0));
         
@@ -57,7 +58,7 @@ public:
     std::string toString(double _x, double _y, double _z);
 
 private:
-ColorDbl white = ColorDbl(255.0, 255.0, 255.0);
+    
 };
 
 ostream &operator<<(ostream &os, const AreaLight &s)

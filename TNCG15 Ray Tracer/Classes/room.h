@@ -42,14 +42,14 @@ public:
 
     Room() {
         // Roof
-        triangles.push_back(Triangle(points[0], points[1], points[5], gray));
-        triangles.push_back(Triangle(points[1], points[2], points[5], gray));
-        triangles.push_back(Triangle(points[2], points[4], points[5], gray));
-        triangles.push_back(Triangle(points[2], points[3], points[4], gray));
+        triangles.push_back(Triangle(points[0], points[1], points[5], white));
+        triangles.push_back(Triangle(points[1], points[2], points[5], white));
+        triangles.push_back(Triangle(points[2], points[4], points[5], white));
+        triangles.push_back(Triangle(points[2], points[3], points[4], white));
 
         // Sides
-        triangles.push_back(Triangle(points[0], points[11], points[6],  green));
-        triangles.push_back(Triangle(points[0], points[5], points[11],  green));
+        triangles.push_back(Triangle(points[0], points[11], points[6],  white));
+        triangles.push_back(Triangle(points[0], points[5], points[11],  white));
         triangles.push_back(Triangle(points[5], points[10], points[11], blue));
         triangles.push_back(Triangle(points[5], points[4], points[10],  blue));
         
@@ -60,14 +60,14 @@ public:
 
         triangles.push_back(Triangle(points[2], points[7], points[8], cyan));
         triangles.push_back(Triangle(points[1], points[7], points[2], cyan));
-        triangles.push_back(Triangle(points[0], points[6], points[1], green));
-        triangles.push_back(Triangle(points[1], points[6], points[7], green));
+        triangles.push_back(Triangle(points[0], points[6], points[1], red));
+        triangles.push_back(Triangle(points[1], points[6], points[7], red));
 
         // Floor
-        triangles.push_back(Triangle(points[6], points[11], points[7], lightGray));
-        triangles.push_back(Triangle(points[7], points[11], points[8], lightGray));
-        triangles.push_back(Triangle(points[8], points[11], points[10],lightGray));
-        triangles.push_back(Triangle(points[8], points[10], points[9], lightGray));
+        triangles.push_back(Triangle(points[6], points[11], points[7], white));
+        triangles.push_back(Triangle(points[7], points[11], points[8], white));
+        triangles.push_back(Triangle(points[8], points[11], points[10],white));
+        triangles.push_back(Triangle(points[8], points[10], points[9], white));
     }
 
 
@@ -75,12 +75,14 @@ public:
     std::string toString(double _x, double _y, double _z);
 
 private:
+    ColorDbl red = ColorDbl(255.0, 0.0, 0.0);
     ColorDbl green = ColorDbl(0.0, 255.0, 0.0);
     ColorDbl blue = ColorDbl(0.0, 0.0, 255.0);
     ColorDbl orange = ColorDbl(255.0, 120.0, 0.0);
     ColorDbl gray = ColorDbl(150.0, 150.0, 150.0);
     ColorDbl cyan = ColorDbl(0.0, 255.0, 255.0);
     ColorDbl lightGray = ColorDbl(244.0, 244.0, 244.0);
+    ColorDbl white = ColorDbl(255.0, 255.0, 255.0);
 };
 
 ostream &operator<<(ostream &os, const Room &s)

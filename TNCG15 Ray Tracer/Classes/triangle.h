@@ -59,7 +59,7 @@ public:
         p2 = p2in;
         p3 = p3in;
         rayNormal = getNormal();
-        color = ColorDbl(0.0, 0.0, 0.0);
+        color = colorIn;
         emission = emissionIn;
     }
 

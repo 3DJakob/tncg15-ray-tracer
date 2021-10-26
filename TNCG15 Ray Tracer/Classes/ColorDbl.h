@@ -63,4 +63,8 @@ ColorDbl operator/(const ColorDbl &col1, const int &number)
         col1.b / number > 255.0 ? 255.0 : col1.b / number);
 }
 
+ostream& operator<< (ostream &os, const ColorDbl &c) {
+    return (os << "R: " << to_string(c.r) << " G: " << to_string(c.g) << " B: " << to_string(c.b)  << std::endl);
+}
+
 #endif /* ColorDbl_h */
