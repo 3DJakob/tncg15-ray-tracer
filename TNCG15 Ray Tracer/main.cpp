@@ -40,10 +40,13 @@ int main()
     // assemble all objects
     Room myRoom;
     Tetrahedon myTetrahedon(Point(8.0, 3.0, -1.0));
+    vector<Sphere> allSpheres;
     
-    vector<Triangle> allTriangles = myTetrahedon.triangleList + myRoom.triangles;
+    allSpheres.push_back(Sphere(Point(8, -3, -1), 1));
+    
     AreaLight myAreaLight;
-    myCamera.render(allTriangles, myAreaLight, 4 );
+    vector<Triangle> allTriangles = myTetrahedon.triangleList + myRoom.triangles + myAreaLight.triangles;
+    myCamera.render(allTriangles, allSpheres, myAreaLight, 4 );
     
     return 0;
 }

@@ -13,14 +13,18 @@
 #include "triangle.h"
 #include "point.hpp"
 #include "AreaLight.h"
+#include "sphere.h"
 
 class Ray
 {
 
 public:
     Triangle triangleHit;
+    Sphere sphereHit;
     Point rayPoint;
     double directLight;
+    
+    string hitType = "none"; // "sphere" | "triangle"
 
     Ray()
     {
@@ -33,7 +37,7 @@ public:
     }
 
     // Cast rays untill color returns
-    ColorDbl cast(Point _startPoint, Point direction, vector<Triangle> triangles, AreaLight sceneAreaLight, int depth, float importance)
+    ColorDbl cast(Point _startPoint, Point direction, vector<Triangle> triangles, vector<Sphere> spheres, AreaLight sceneAreaLight, int depth, float importance)
     {
         triangleHit = triangles[0];
         startPoint = _startPoint.get();
@@ -44,30 +48,43 @@ public:
         for (Triangle triangle : triangles)
         {
             auto res = glm::vec3();
-            //            cout << direction << endl;
             bool doesHit = triangle.RayIntersectsTriangle(startPoint, direction.get() - startPoint, res);
-            if (doesHit && (res.length() < minDist))
+            if (doesHit && (glm::distance(startPoint, res) < minDist))
             {
-                //                cout << "Hit: " << Point(res.x, res.y, res.z) << endl;
-                minDist = res.length();
+                hitType = "triangle";
+                minDist = glm::distance(startPoint, res);
                 triangleHit = triangle;
                 hitLocation = res;
             }
         }
+        
+        for (Sphere sphere : spheres) {
+            auto res = glm::vec3();
+            bool doesHit = sphere.RayIntersectsSphere(startPoint, direction.get() - startPoint, res);
+            if (doesHit && (glm::distance(startPoint, res) < minDist))
+            {
+                hitType = "sphere";
+                minDist = glm::distance(startPoint, res);
+                sphereHit = sphere;
+                hitLocation = res;
+            }
+        }
+        
         rayPoint = Point(hitLocation.x, hitLocation.y, hitLocation.z);
 
         directLight = 0.0;
 
         // Calculate number of seen pointlights
+        bool doesHit = false;
+        
         for (Point light : sceneAreaLight.lightPoints)
         {
             // Check if seen!
             //            auto objectTriangles = triangles. // No need to check for intersect with walls here...
             std::vector<Triangle> objectTriangles(triangles.begin(), triangles.end() - 20);
-            bool doesHit = false;
             for (Triangle triangle : objectTriangles)
             {
-                if (triangleHit != triangle)
+                if (hitType == "sphere" || triangleHit != triangle)
                 {
                     glm::vec3 hitPoint;
                     doesHit = triangle.RayIntersectsTriangle(rayPoint.get(), light.get(), hitPoint);
@@ -77,6 +94,21 @@ public:
                     }
                 }
             }
+        
+            if (!doesHit) {
+                for (Sphere sphere : spheres) {
+                    if (hitType == "triangle" || sphereHit != sphere)
+                    {
+                        glm::vec3 hitPoint;
+                        doesHit = sphere.RayIntersectsSphere(rayPoint.get(), light.get(), hitPoint);
+                        if (doesHit)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+            
             if (!doesHit)
             {
                 directLight = directLight + sceneAreaLight.radiance;
@@ -93,7 +125,11 @@ public:
 
         if (depth == 0)
         {
-            return triangleHit.color * directLight * importance;
+            if (hitType == "triangle") {
+                return triangleHit.color * directLight * importance + triangleHit.emission * triangleHit.color;
+            } else if (hitType == "sphere") {
+                return sphereHit.color * directLight * importance + triangleHit.emission * triangleHit.color;
+            }
         }
 
         // russian roulette
@@ -101,7 +137,11 @@ public:
         float random = (float)rand() / RAND_MAX;
         if (random < p)
         {
-            return triangleHit.color * directLight * importance;
+            if (hitType == "triangle") {
+                return triangleHit.color * directLight * importance + triangleHit.emission * triangleHit.color;
+            } else if (hitType == "sphere") {
+                return sphereHit.color * directLight * importance + triangleHit.emission * triangleHit.color;
+            } 
         }
         else
         {
@@ -133,12 +173,13 @@ public:
             
             rayPoint.add( outgoing * -0.001f);
 
-            auto color = tempRay.cast(rayPoint, Point(outgoing.x, outgoing.y, outgoing.z), triangles, sceneAreaLight, depth, importance * 0.8);
+            auto color = tempRay.cast(rayPoint, Point(outgoing.x, outgoing.y, outgoing.z), triangles, spheres, sceneAreaLight, depth, importance * 0.8);
             // return color;
-            return triangleHit.roughness == 0.0 ? color : color * triangleHit.color + triangleHit.color * directLight * importance;
+            return triangleHit.roughness == 0.0 ? color : color * triangleHit.color + triangleHit.color * directLight * importance + triangleHit.emission * triangleHit.color;
         }
 
-        // return triangleHit.color * directLight;
+        // will never happen hopefully
+        return triangleHit.color * directLight * importance + triangleHit.emission * triangleHit.color;
     }
 
     void setEnd(Point _end);

@@ -20,7 +20,7 @@ class AreaLight
 {
 
 public:
-    Point location = Point(-5, 0, 4);
+    Point location = Point(5, 0, 4);
     float numberOfLightPoints = 4;
     float radiance = 0.5;
     vector<Point> lightPoints;
@@ -29,16 +29,27 @@ public:
     float sizeY = 2.0;
     //  ColorDbl green = ColorDbl(0.0, 255.0, 0.0);
 
+    vector<Triangle> triangles;
+
     AreaLight()
     {
         auto c = location.get();
         // lightPoints(numberOfLightPoints);
         for (int i = 0; i < numberOfLightPoints; i++)
         {
-            float rx = -sizeX/2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(sizeX)));
-            float ry = -sizeY/2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(sizeY)));
+            float rx = -sizeX/2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX*(sizeX)));
+            float ry = -sizeY/2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX*(sizeY)));
             lightPoints.push_back(Point(c.x + rx, c.y + ry, c.z));
         };
+
+        Point p0 = Point(location.get().x - sizeX / 2, location.get().y - sizeY / 2, location.get().z ); // Base
+        Point p1 = Point(location.get().x - sizeX / 2, location.get().y + sizeY / 2, location.get().z ); //front
+        Point p2 = Point(location.get().x + sizeX / 2, location.get().y - sizeY / 2, location.get().z );  //left
+        Point p3 = Point(location.get().x + sizeX / 2, location.get().y + sizeY / 2, location.get().z );  //right
+
+        triangles.push_back(Triangle(p0, p1, p2, white, 0.0, 1.0));
+        triangles.push_back(Triangle(p1, p3, p2, white, 0.0, 1.0));
+        
     }
 
     friend ostream &
@@ -46,6 +57,7 @@ public:
     std::string toString(double _x, double _y, double _z);
 
 private:
+ColorDbl white = ColorDbl(255.0, 255.0, 255.0);
 };
 
 ostream &operator<<(ostream &os, const AreaLight &s)

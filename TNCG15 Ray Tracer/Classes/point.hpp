@@ -49,4 +49,13 @@ bool operator== (Point& p1, Point& p2)
     }
 }
 
+Point operator- (Point& p1, Point& p2)
+{
+    return Point(
+        p1.get().x - p2.get().x,
+        p1.get().y - p2.get().y,
+        p1.get().z - p2.get().z
+    );
+}
+
 #endif // __POINT_H__ 

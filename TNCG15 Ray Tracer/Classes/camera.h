@@ -18,6 +18,7 @@
 #include "glm.hpp"
 #include "gtx/transform.hpp"
 #include "gtx/rotate_vector.hpp"
+#include "sphere.h"
 
 class Camera
 {
@@ -63,7 +64,7 @@ public:
         return Point(perpendicular.x, perpendicular.y, perpendicular.z);
     }
 
-    static void renderPixel(int i, int j, int width, int height, int samples, vector<Triangle> triangles, AreaLight sceneAreaLight, ColorDbl &resColor, Point target, Point position)
+    static void renderPixel(int i, int j, int width, int height, int samples, vector<Triangle> triangles, vector<Sphere> spheres, AreaLight sceneAreaLight, ColorDbl &resColor, Point target, Point position)
     {
 
         // Unecessary to render pixels outside viewport
@@ -73,7 +74,7 @@ public:
 
             for (int i = 0; i < samples; i++)
             {
-                resColor = resColor + (tempRay.cast(position, target, triangles, sceneAreaLight, 6, 1.0) / samples);
+                resColor = resColor + (tempRay.cast(position, target, triangles, spheres, sceneAreaLight, 6, 1.0) / samples);
             }
         }
     }
@@ -99,7 +100,7 @@ public:
             pointOfInterest.get().z + cameraPlaneY.get().z * ((i - (width / 2)) / width) * 2 + cameraPlaneZ.get().z * ((j - (height / 2)) / height) * 2);
     }
 
-    void render(vector<Triangle> triangles, AreaLight sceneAreaLight, int samples)
+    void render(vector<Triangle> triangles, vector<Sphere> spheres, AreaLight sceneAreaLight, int samples)
     {
 
         cout << "calc axis:" << endl;
@@ -129,14 +130,14 @@ public:
 
                 ColorDbl resColor1, resColor2, resColor3, resColor4, resColor5, resColor6, resColor7, resColor8;
 
-                thread pixel1(renderPixel, i, j, width, height, samples, triangles, sceneAreaLight, ref(resColor1), target1, position);
-                thread pixel2(renderPixel, i + 1, j, width, height, samples, triangles, sceneAreaLight, ref(resColor2), target2, position);
-                thread pixel3(renderPixel, i + 2, j, width, height, samples, triangles, sceneAreaLight, ref(resColor3), target3, position);
-                thread pixel4(renderPixel, i + 3, j, width, height, samples, triangles, sceneAreaLight, ref(resColor4), target4, position);
-                thread pixel5(renderPixel, i + 4, j, width, height, samples, triangles, sceneAreaLight, ref(resColor5), target5, position);
-                thread pixel6(renderPixel, i + 5, j, width, height, samples, triangles, sceneAreaLight, ref(resColor6), target6, position);
-                thread pixel7(renderPixel, i + 6, j, width, height, samples, triangles, sceneAreaLight, ref(resColor7), target7, position);
-                thread pixel8(renderPixel, i + 7, j, width, height, samples, triangles, sceneAreaLight, ref(resColor8), target8, position);
+                thread pixel1(renderPixel, i, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor1), target1, position);
+                thread pixel2(renderPixel, i + 1, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor2), target2, position);
+                thread pixel3(renderPixel, i + 2, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor3), target3, position);
+                thread pixel4(renderPixel, i + 3, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor4), target4, position);
+                thread pixel5(renderPixel, i + 4, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor5), target5, position);
+                thread pixel6(renderPixel, i + 5, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor6), target6, position);
+                thread pixel7(renderPixel, i + 6, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor7), target7, position);
+                thread pixel8(renderPixel, i + 7, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor8), target8, position);
 
                 pixel1.join();
                 pixel2.join();

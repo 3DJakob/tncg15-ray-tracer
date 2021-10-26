@@ -13,6 +13,7 @@ public:
     ColorDbl color;
     glm::vec3 rayNormal;
     float roughness = 1.0f;
+    float emission = 0.0f;
 
     Triangle()
     {
@@ -50,6 +51,16 @@ public:
         rayNormal = getNormal();
         color = colorIn;
         roughness = roughnessIn;
+    }
+
+    Triangle(Point p1in, Point p2in, Point p3in, ColorDbl colorIn, float roughnessIn, float emissionIn)
+    {
+        p1 = p1in;
+        p2 = p2in;
+        p3 = p3in;
+        rayNormal = getNormal();
+        color = ColorDbl(0.0, 0.0, 0.0);
+        emission = emissionIn;
     }
 
     bool RayIntersectsTriangle(glm::vec3 rayOrigin,

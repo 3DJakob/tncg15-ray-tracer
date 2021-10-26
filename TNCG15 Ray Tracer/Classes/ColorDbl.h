@@ -40,6 +40,11 @@ ColorDbl operator*(const ColorDbl &col, const double &doubl)
                     doubl * col.g > 255.0 ? 255.0 : col.g * doubl,
                     doubl * col.b > 255.0 ? 255.0 : col.b * doubl);
 }
+//  double * ColorDbl
+ColorDbl operator*(const double &doubl, const ColorDbl &col)
+{
+    return col * doubl;
+}
 
 // ColorDbl + ColorDbl
 ColorDbl operator+(const ColorDbl &col1, const ColorDbl &col2)
