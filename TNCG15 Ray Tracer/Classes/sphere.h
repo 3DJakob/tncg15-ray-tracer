@@ -21,7 +21,7 @@ public:
     Point position;
     double radius;
     
-    ColorDbl color = ColorDbl(255.0, 0.0, 0.0);
+    ColorDbl color = ColorDbl(1.0, 1.0, 1.0);
     float roughness = 1.0f;
     float emission = 0.0f;
 

@@ -14,6 +14,7 @@
 #include "point.hpp"
 #include "AreaLight.h"
 #include "sphere.h"
+#include <math.h>
 
 class Ray
 {
@@ -23,7 +24,7 @@ public:
     Sphere sphereHit;
     Point rayPoint;
     double directLight;
-    
+
     string hitType = "none"; // "sphere" | "triangle"
 
     Ray()
@@ -57,8 +58,9 @@ public:
                 hitLocation = res;
             }
         }
-        
-        for (Sphere sphere : spheres) {
+
+        for (Sphere sphere : spheres)
+        {
             auto res = glm::vec3();
             bool doesHit = sphere.RayIntersectsSphere(startPoint, direction.get() - startPoint, res);
             if (doesHit && (glm::distance(startPoint, res) < minDist))
@@ -69,93 +71,123 @@ public:
                 hitLocation = res;
             }
         }
-        
+
+        // Inverse square law
+        // float radianceFalloff = 1 / pow((minDist + 1), 2);
+        // float radianceFalloff = 1 / (minDist + 1);
+
         rayPoint = Point(hitLocation.x, hitLocation.y, hitLocation.z);
 
         directLight = 0.0;
 
         // Calculate number of seen pointlights
         bool doesHit = false;
-        
-        for (Point light : sceneAreaLight.lightPoints)
+        auto normal = hitType == "triangle" ? triangleHit.rayNormal : glm::normalize(hitLocation - sphereHit.position.get());
+
+        if (glm::dot(sceneAreaLight.normal.get(), glm::normalize(hitLocation - sceneAreaLight.location.get())) > 0)
         {
-            // Check if seen!
-            // No need to check for intersect with walls here... therefore -20 for increased preformance
-            std::vector<Triangle> objectTriangles(triangles.begin(), triangles.end() - 20);
-            for (Triangle triangle : objectTriangles)
+            for (Point light : sceneAreaLight.lightPoints)
             {
-                if (hitType == "sphere" || triangleHit != triangle) // Hits triangle
+                // if (glm::dot(normal, glm::normalize(light.get() - hitLocation)) > 0) {
+                if (glm::dot(normal, glm::normalize(light.get() - hitLocation)) > 0)
                 {
-                    if (triangle.emission < 0.1) { // Check that it is not triangles on the light itself
-                        glm::vec3 hitPoint;
-                        doesHit = triangle.RayIntersectsTriangle(rayPoint.get(), light.get() - rayPoint.get(), hitPoint);
-                        if (doesHit && glm::distance(hitPoint, rayPoint.get()) > glm::distance(light.get(), rayPoint.get())) { // If light is closer than the object covering it is not in shadow
-                            doesHit = false;
-                        }
-                        if (doesHit)
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (!doesHit) {
-                for (Sphere sphere : spheres) {
-                    if (hitType == "triangle" || sphereHit != sphere) // Hits sphere
+                    // Check if seen!
+                    // No need to check for intersect with walls here... therefore -20 for increased preformance
+                    std::vector<Triangle> objectTriangles(triangles.begin(), triangles.end() - 20);
+                    for (Triangle triangle : objectTriangles)
                     {
-                        glm::vec3 hitPoint;
-                        doesHit = sphere.RayIntersectsSphere(rayPoint.get(), light.get() - rayPoint.get(), hitPoint);
-                        if (doesHit && glm::distance(hitPoint, rayPoint.get()) > glm::distance(light.get(), rayPoint.get())) { // If light is closer than the object covering it is not in shadow
-                            doesHit = false;
-                        }
-                        if (doesHit)
+                        if (hitType == "sphere" || triangleHit != triangle) // Hits triangle from a sphere
                         {
-                            break;
+                            if (triangle.emission < 0.1)
+                            { // Check that it is not triangles on the light itself
+                                glm::vec3 hitPoint;
+                                doesHit = triangle.RayIntersectsTriangle(rayPoint.get(), light.get() - rayPoint.get(), hitPoint);
+                                if (doesHit && glm::distance(hitPoint, rayPoint.get()) > glm::distance(light.get(), rayPoint.get()))
+                                { // If light is closer than the object covering it is not in shadow
+                                    doesHit = false;
+                                }
+                                if (doesHit)
+                                {
+                                    break;
+                                }
+                            }
                         }
+                    }
+
+                    if (!doesHit)
+                    {
+                        for (Sphere sphere : spheres)
+                        {
+                            if (hitType == "triangle" || sphereHit != sphere) // Hits sphere
+                            {
+                                glm::vec3 hitPoint;
+                                doesHit = sphere.RayIntersectsSphere(rayPoint.get(), light.get() - rayPoint.get(), hitPoint);
+                                if (doesHit && glm::distance(hitPoint, rayPoint.get()) > glm::distance(light.get(), rayPoint.get()))
+                                { // If light is closer than the object covering it is not in shadow
+                                    doesHit = false;
+                                }
+                                if (doesHit)
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (!doesHit)
+                    {
+                        // directLight = directLight + sceneAreaLight.radiance / pow(glm::distance(light.get(), hitLocation), 0.5);
+                        directLight = directLight + sceneAreaLight.radiance * 30 / pow(glm::distance(light.get(), hitLocation), 2);
+                    }
+                    else
+                    {
+                        // Is in shadow!
                     }
                 }
             }
-
-            if (!doesHit)
-            {
-                directLight = directLight + sceneAreaLight.radiance;
-            }
-            else
-            {
-                // Is in shadow!
-            }
+        } else {
+            // cout << "no need to check" << endl;
         }
-        
-//        directLight = directLight / 4;
 
         directLight = directLight / sceneAreaLight.numberOfLightPoints;
 
         depth--;
-        
-        if (triangleHit.emission > 0.0) { // Hits light terminate!
-            return triangleHit.color * triangleHit.emission;
+
+        if (triangleHit.emission > 0.0)
+        { // Hits light terminate!
+            return triangleHit.color * triangleHit.emission * importance;
         }
 
         if (depth == 0)
         {
-            if (hitType == "triangle") {
-                return  triangleHit.emission * triangleHit.color;
-            } else if (hitType == "sphere") {
+            if (hitType == "triangle")
+            {
+                return triangleHit.color * (directLight * importance) + triangleHit.color * triangleHit.emission * importance;
+            }
+            else if (hitType == "sphere")
+            {
                 return sphereHit.color * directLight * importance;
             }
         }
 
         // russian roulette
         float p = 0.25;
+        float hitRougness = hitType == "triangle" ? triangleHit.roughness : sphereHit.roughness;
+        if (hitRougness == 0.0)
+        {
+            p = 0.0;
+        }
         float random = (float)rand() / RAND_MAX;
         if (random < p)
         {
-            if (hitType == "triangle") {
-                return triangleHit.color * directLight * importance + triangleHit.emission * triangleHit.color;
-            } else if (hitType == "sphere") {
-                return sphereHit.color * directLight * importance;
-            } 
+            if (hitType == "triangle")
+            {
+                return (triangleHit.color * directLight * importance + triangleHit.emission * triangleHit.color * importance);
+            }
+            else if (hitType == "sphere")
+            {
+                return (sphereHit.color * directLight * importance);
+            }
         }
         else
         {
@@ -165,19 +197,21 @@ public:
             glm::vec3 axis1;
             glm::vec3 axis2;
 
-            auto normal = hitType == "triangle" ? triangleHit.rayNormal : glm::normalize(hitLocation - sphereHit.position.get());
-            
             auto incoming = _startPoint.get() - direction.get();
 
             tempRay.CreateLocalCoordinateSystem(normal, incoming, axis1, axis2);
 
             glm::vec3 outgoing = glm::vec3(0.0, 0.0, 0.0);
-            
-            if ((hitType == "triangle" ? triangleHit.roughness : sphereHit.roughness) == 0.0) {
+
+            if ((hitType == "triangle" ? triangleHit.roughness : sphereHit.roughness) == 0.0)
+            {
                 // Perfect reflection
                 outgoing = normal * glm::dot(normal, incoming);
                 outgoing = outgoing - axis2 * glm::dot(incoming, axis2);
-            } else {
+                importance = importance / 0.8; // Should not loose light in perfect reflection.
+            }
+            else
+            {
                 outgoing = normal * ((float)rand() / RAND_MAX);
                 outgoing = outgoing + axis1 * ((float)rand() / RAND_MAX - 0.5f) * 2.0f;
                 outgoing = outgoing + axis2 * ((float)rand() / RAND_MAX - 0.5f) * 2.0f;
@@ -185,18 +219,21 @@ public:
 
             // .cast() wants a target in 3d space not a direction
             outgoing = rayPoint.get() + outgoing;
-            
-            rayPoint.add( outgoing * -0.001f);
+
+            rayPoint.add(outgoing * -0.001f);
 
             auto color = tempRay.cast(rayPoint, Point(outgoing.x, outgoing.y, outgoing.z), triangles, spheres, sceneAreaLight, depth, importance * 0.8);
             // return color;
-            if (hitType == "triangle") {
-                return triangleHit.roughness == 0.0 ? color : color * triangleHit.color + triangleHit.color * directLight * importance + triangleHit.emission * triangleHit.color;
-            } else if (hitType == "sphere"){
-                if (sphereHit.roughness == 0.0) {
-//                    cout << color << endl;
-                }
-                return sphereHit.roughness == 0.0 ? color : color * sphereHit.color + sphereHit.color * directLight * importance + sphereHit.emission * sphereHit.color;
+            if (hitType == "triangle")
+            {
+                return triangleHit.roughness == 0.0 ? (
+                                                          color)
+                                                    : (
+                                                          color * triangleHit.color + triangleHit.color * directLight * importance + triangleHit.emission * triangleHit.color);
+            }
+            else if (hitType == "sphere")
+            {
+                return sphereHit.roughness == 0.0 ? color : (color * sphereHit.color + sphereHit.color * directLight * importance + sphereHit.emission * sphereHit.color);
             }
         }
 

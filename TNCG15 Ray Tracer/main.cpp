@@ -42,12 +42,13 @@ int main()
     Tetrahedon myTetrahedon(Point(8.0, 3.0, -1.0));
     vector<Sphere> allSpheres;
     
-    allSpheres.push_back(Sphere(Point(8, -3, -1), 3, ColorDbl(255, 255, 255), 0.0));
+    allSpheres.push_back(Sphere(Point(8, -3, 1), 2, ColorDbl(1.0, 1.0, 1.0), 1.0));
+    allSpheres.push_back(Sphere(Point(5, -1, -2), 1.5, ColorDbl(1.0, 1.0, 1.0), 0.0));
     
     AreaLight myAreaLight;
     
     vector<Triangle> allTriangles = myTetrahedon.triangleList + myAreaLight.triangles + myRoom.triangles;
-    myCamera.render(allTriangles, allSpheres, myAreaLight, 20 );
+    myCamera.render(allTriangles, allSpheres, myAreaLight, 8 );
     
     return 0;
 }

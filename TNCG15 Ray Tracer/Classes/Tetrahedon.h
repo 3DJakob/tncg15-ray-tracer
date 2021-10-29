@@ -29,11 +29,11 @@ public:
     vector <Triangle> triangleList;
     // vector <Point> tetrahedronPoints;
 
-    ColorDbl red = ColorDbl(255.0, 0.0, 0.0);
-    ColorDbl green = ColorDbl(0.0, 255.0, 0.0);
-    ColorDbl blue = ColorDbl(0.0, 0.0, 255.0);
-    ColorDbl magenta = ColorDbl(255.0, 0.0, 255.0);
-    ColorDbl cyan = ColorDbl(0.0, 255.0, 255.0);
+    ColorDbl red = ColorDbl(1.0, 0.0, 0.0);
+    ColorDbl green = ColorDbl(0.0, 1.0, 0.0);
+    ColorDbl blue = ColorDbl(0.0, 0.0, 1.0);
+    ColorDbl magenta = ColorDbl(1.0, 0.0, 1.0);
+    ColorDbl cyan = ColorDbl(0.0, 1.0, 1.0);
 
     Tetrahedon(Point _p0) {
         //Top
@@ -43,10 +43,10 @@ public:
         Point p2 = Point(_p0.get().x, -scale + _p0.get().y, -scale +_p0.get().z);  //left
         Point p3 = Point(_p0.get().x, scale + _p0.get().y, -scale +_p0.get().z);  //right
 
-        triangleList.push_back(Triangle(p0, p3, p1, red, 0.0));
-        triangleList.push_back(Triangle(p0, p1, p2, green, 0.0));
-        triangleList.push_back(Triangle(p0, p2, p3, red, 0.0));
-        triangleList.push_back(Triangle(p1, p2, p3, blue, 0.0));
+        triangleList.push_back(Triangle(p0, p3, p1, red, 1.0));
+        triangleList.push_back(Triangle(p0, p1, p2, green, 1.0));
+        triangleList.push_back(Triangle(p0, p2, p3, red, 1.0));
+        triangleList.push_back(Triangle(p1, p2, p3, blue, 1.0));
 
     }
 

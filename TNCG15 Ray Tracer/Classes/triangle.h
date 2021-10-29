@@ -31,7 +31,7 @@ public:
         p2 = p2in;
         p3 = p3in;
         rayNormal = getNormal();
-        color = ColorDbl(255.0, 0, 0);
+        color = ColorDbl(1.0, 0, 0);
     }
 
     Triangle(Point p1in, Point p2in, Point p3in, ColorDbl colorIn)

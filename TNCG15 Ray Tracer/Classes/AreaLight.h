@@ -20,14 +20,14 @@ class AreaLight
 {
 
 public:
-    Point location = Point(5, 0, 4.9);
-    float numberOfLightPoints = 60;
+    Point location = Point(5, 0, 4.99);
+    Point normal = Point(0,0,-1);
+    float numberOfLightPoints = 50;
     float radiance = 0.5;
     vector<Point> lightPoints;
 
     float sizeX = 2.0;
     float sizeY = 2.0;
-    //  ColorDbl green = ColorDbl(0.0, 255.0, 0.0);
 
     vector<Triangle> triangles;
 
@@ -37,8 +37,8 @@ public:
         // lightPoints(numberOfLightPoints);
         for (int i = 0; i < numberOfLightPoints; i++)
         {
-            float rx = -sizeX/2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX*(sizeX)));
-            float ry = -sizeY/2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX*(sizeY)));
+            float rx = (static_cast <float> (rand())) /( static_cast <float> (RAND_MAX)) * sizeX - sizeX / 2;
+            float ry = (static_cast <float> (rand())) /( static_cast <float> (RAND_MAX)) * sizeY -sizeY / 2;
             lightPoints.push_back(Point(c.x + rx, c.y + ry, c.z));
         };
 
@@ -47,7 +47,7 @@ public:
         Point p2 = Point(location.get().x + sizeX / 2, location.get().y - sizeY / 2, location.get().z );  //left
         Point p3 = Point(location.get().x + sizeX / 2, location.get().y + sizeY / 2, location.get().z );  //right
 
-        ColorDbl white = ColorDbl(255.0, 255.0, 255.0);
+        ColorDbl white = ColorDbl(1.0, 1.0, 1.0);
         triangles.push_back(Triangle(p0, p1, p2, white, 0.0, 1.0));
         triangles.push_back(Triangle(p1, p3, p2, white, 0.0, 1.0));
         

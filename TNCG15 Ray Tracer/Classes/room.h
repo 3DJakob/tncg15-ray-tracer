@@ -75,14 +75,14 @@ public:
     std::string toString(double _x, double _y, double _z);
 
 private:
-    ColorDbl red = ColorDbl(255.0, 0.0, 0.0);
-    ColorDbl green = ColorDbl(0.0, 255.0, 0.0);
-    ColorDbl blue = ColorDbl(0.0, 0.0, 255.0);
-    ColorDbl orange = ColorDbl(255.0, 120.0, 0.0);
-    ColorDbl gray = ColorDbl(150.0, 150.0, 150.0);
-    ColorDbl cyan = ColorDbl(0.0, 255.0, 255.0);
-    ColorDbl lightGray = ColorDbl(244.0, 244.0, 244.0);
-    ColorDbl white = ColorDbl(255.0, 255.0, 255.0);
+    ColorDbl red = ColorDbl(1.0, 0.0, 0.0);
+    ColorDbl green = ColorDbl(0.0, 1.0, 0.0);
+    ColorDbl blue = ColorDbl(0.0, 0.0, 1.0);
+    ColorDbl orange = ColorDbl(1.0, 0.45, 0.0);
+    ColorDbl gray = ColorDbl(0.5, 0.5, 0.5);
+    ColorDbl cyan = ColorDbl(0.0, 1.0, 1.0);
+    ColorDbl lightGray = ColorDbl(0.9, 0.9, 0.9);
+    ColorDbl white = ColorDbl(1.0, 1.0, 1.0);
 };
 
 ostream &operator<<(ostream &os, const Room &s)

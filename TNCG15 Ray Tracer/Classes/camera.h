@@ -74,7 +74,7 @@ public:
 
             for (int i = 0; i < samples; i++)
             {
-                resColor = resColor + (tempRay.cast(position, target, triangles, spheres, sceneAreaLight, 6, 1.0) / samples);
+                resColor = resColor + (tempRay.cast(position, target, triangles, spheres, sceneAreaLight, 10, 1.0) / samples);
             }
         }
     }
@@ -85,9 +85,9 @@ public:
         if (x < width)
         {
             RGBApixel Temp2 = AnImage.GetPixel(x, y);
-            Temp2.Blue = color.b;
-            Temp2.Green = color.g;
-            Temp2.Red = color.r;
+            Temp2.Blue = color.b * 255;
+            Temp2.Green = color.g * 255;
+            Temp2.Red = color.r * 255;
             AnImage.SetPixel(x + 1, y, Temp2);
         }
     }
@@ -108,7 +108,7 @@ public:
         Point cameraPlaneZ = pointOfInterestTop;
 
         AnImage.SetSize(width + 1, height + 1);
-        AnImage.SetBitDepth(8);
+        AnImage.SetBitDepth(24);
 
         int completed;
 
@@ -163,7 +163,7 @@ public:
         }
 
         //        auto auto = AnImage.WriteToFile("/Users/jakob/coding/tncg15-ray-tracer/TNCG15\ Ray\ Tracer/sample.bmp");
-        /// alex path: /Users/alex/coding/tncg15-ray-tracer/TNCG15\ Ray\ Tracer/sample.bmp
+        // alex path: /Users/alex/coding/tncg15-ray-tracer/TNCG15\ Ray\ Tracer/sample.bmp
         auto test = AnImage.WriteToFile("/Users/jakob/coding/tncg15/TNCG15\ Ray\ Tracer/sample.bmp");
 
         cout << endl;
