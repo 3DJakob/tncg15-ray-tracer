@@ -27,9 +27,9 @@ public:
     Point pointOfInterest;
     Point pointOfInterestTop;
     int fov = 90;
-    double height = 480;
+    double height = 799;
     // int width = 640;
-    double width = 480;
+    double width = 799;
 
     double lastProgress = 0;
 
