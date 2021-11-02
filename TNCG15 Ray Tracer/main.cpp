@@ -48,7 +48,7 @@ int main()
     AreaLight myAreaLight;
     
     vector<Triangle> allTriangles = myTetrahedon.triangleList + myAreaLight.triangles + myRoom.triangles;
-    myCamera.render(allTriangles, allSpheres, myAreaLight, 64 );
+    myCamera.render(allTriangles, allSpheres, myAreaLight, 24, 6 );
     
     return 0;
 }

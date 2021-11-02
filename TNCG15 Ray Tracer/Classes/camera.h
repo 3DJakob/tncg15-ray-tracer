@@ -64,7 +64,7 @@ public:
         return Point(perpendicular.x, perpendicular.y, perpendicular.z);
     }
 
-    static void renderPixel(int i, int j, int width, int height, int samples, vector<Triangle> triangles, vector<Sphere> spheres, AreaLight sceneAreaLight, ColorDbl &resColor, Point target, Point position)
+    static void renderPixel(int i, int j, int width, int height, int samples, vector<Triangle> triangles, vector<Sphere> spheres, AreaLight sceneAreaLight, ColorDbl &resColor, Point target, Point position, int depth)
     {
 
         // Unecessary to render pixels outside viewport
@@ -74,7 +74,7 @@ public:
 
             for (int i = 0; i < samples; i++)
             {
-                resColor = resColor + (tempRay.cast(position, target, triangles, spheres, sceneAreaLight, 10, 1.0) / samples);
+                resColor = resColor + (tempRay.cast(position, target, triangles, spheres, sceneAreaLight, depth, 1.0) / samples);
             }
         }
     }
@@ -100,7 +100,7 @@ public:
             pointOfInterest.get().z + cameraPlaneY.get().z * ((i - (width / 2)) / width) * 2 + cameraPlaneZ.get().z * ((j - (height / 2)) / height) * 2);
     }
 
-    void render(vector<Triangle> triangles, vector<Sphere> spheres, AreaLight sceneAreaLight, int samples)
+    void render(vector<Triangle> triangles, vector<Sphere> spheres, AreaLight sceneAreaLight, int samples, int depth)
     {
 
         cout << "calc axis:" << endl;
@@ -130,14 +130,14 @@ public:
 
                 ColorDbl resColor1, resColor2, resColor3, resColor4, resColor5, resColor6, resColor7, resColor8;
 
-                thread pixel1(renderPixel, i, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor1), target1, position);
-                thread pixel2(renderPixel, i + 1, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor2), target2, position);
-                thread pixel3(renderPixel, i + 2, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor3), target3, position);
-                thread pixel4(renderPixel, i + 3, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor4), target4, position);
-                thread pixel5(renderPixel, i + 4, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor5), target5, position);
-                thread pixel6(renderPixel, i + 5, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor6), target6, position);
-                thread pixel7(renderPixel, i + 6, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor7), target7, position);
-                thread pixel8(renderPixel, i + 7, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor8), target8, position);
+                thread pixel1(renderPixel, i, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor1), target1, position, depth);
+                thread pixel2(renderPixel, i + 1, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor2), target2, position, depth);
+                thread pixel3(renderPixel, i + 2, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor3), target3, position, depth);
+                thread pixel4(renderPixel, i + 3, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor4), target4, position, depth);
+                thread pixel5(renderPixel, i + 4, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor5), target5, position, depth);
+                thread pixel6(renderPixel, i + 5, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor6), target6, position, depth);
+                thread pixel7(renderPixel, i + 6, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor7), target7, position, depth);
+                thread pixel8(renderPixel, i + 7, j, width, height, samples, triangles, spheres, sceneAreaLight, ref(resColor8), target8, position, depth);
 
                 pixel1.join();
                 pixel2.join();
@@ -164,7 +164,7 @@ public:
 
         //        auto auto = AnImage.WriteToFile("/Users/jakob/coding/tncg15-ray-tracer/TNCG15\ Ray\ Tracer/sample.bmp");
         // alex path: /Users/alex/coding/tncg15-ray-tracer/TNCG15\ Ray\ Tracer/sample.bmp
-        auto test = AnImage.WriteToFile("/Users/jakob/coding/tncg15/TNCG15\ Ray\ Tracer/sample.bmp");
+        auto test = AnImage.WriteToFile("/Users/jakob/coding/tncg15-ray-tracer/TNCG15\ Ray\ Tracer/sample.bmp");
 
         cout << endl;
 
